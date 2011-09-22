@@ -1,0 +1,11 @@
+IMMEDIATE TODO:
+[fxn] generate public and private key
+[fxn] string to array
+[fxn] array to string
+[fxn] pad and unpad
+[fxn] generate shared key
+[fxn] encrypt and decrypt string
+
+IMPORTANT LINKS:
+[link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
+[description] practical explanation and examples with pycrypto
