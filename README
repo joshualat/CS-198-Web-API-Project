@@ -9,3 +9,8 @@ IMMEDIATE TODO:
 IMPORTANT LINKS:
 [link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
 [description] practical explanation and examples with pycrypto
+
+GIT COMMANDS:
+git pull
+git push -u origin master
+git commit -m "Some message here" -a
