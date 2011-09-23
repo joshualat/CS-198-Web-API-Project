@@ -1,7 +1,7 @@
 IMMEDIATE TODO:
+create url opener with post
 create WEB API
 git ignore local_settings.py and dev.db
-file creation and file reading
 
 box/
 	private.key

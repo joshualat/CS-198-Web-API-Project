@@ -2,6 +2,6 @@
 
 private.key
 public.key
-config.py
+config
 local_settings.py
 dev.db
