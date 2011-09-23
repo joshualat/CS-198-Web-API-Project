@@ -10,6 +10,10 @@ class USBUser(models.Model):
     usb_code = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     password_code = models.CharField(max_length=100)
+    shared_key = models.CharField(max_length=1000)
+    public_key = models.CharField(max_length=1000)
+    salt = models.CharField(max_length=50)
+    one_time_password = models.CharField(max_length=1000)
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

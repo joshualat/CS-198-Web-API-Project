@@ -3,5 +3,6 @@
 private.key
 public.key
 config
+web.data
 local_settings.py
 dev.db

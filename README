@@ -1,5 +1,6 @@
 IMMEDIATE TODO:
 create urls
+generate one time password and create a one time password field for user
 create WEB API
 git ignore local_settings.py and dev.db
 

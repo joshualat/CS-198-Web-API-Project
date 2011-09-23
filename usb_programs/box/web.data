@@ -1,0 +1,17 @@
+(dp1
+S'http://localhost:8000/'
+p2
+(dp3
+S'public_key'
+p4
+S'public'
+p5
+sS'hashed_uuid'
+p6
+S'uuid'
+p7
+sS'shared_key'
+p8
+S'shared'
+p9
+ss.
