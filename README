@@ -1,5 +1,13 @@
 IMMEDIATE TODO:
 create WEB API
+git ignore local_settings.py and dev.db
+file creation and file reading
+
+box/
+	private.key
+	public.key
+	config
+
 
 IMPORTANT LINKS:
 [link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/

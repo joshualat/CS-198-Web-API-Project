@@ -1,3 +1,7 @@
-# Compiled source #
-###################
 *.pyc
+
+private.key
+public.key
+config.py
+local_settings.py
+dev.db
