@@ -4,11 +4,11 @@ p2
 (dp3
 S'public_key'
 p4
-S'public'
+S'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt+uEt2r+8F4ShfNLv91R\nKc0Ukjc4PbEIY3lanSjo2cy9rjhTuJ1oMjOs9m9OnIc7M2OSognfmcjMwbOSzW3O\nSruhpmhoHQt014tLcNYfKsOyrqrI8B34aj7DJBtCD0ournoOx1SDX9V7DC7NXnFB\nesV1SV5gFihDduroLIfiFH7v3ecAMx8MzYYinh6o9YXSpvL4attXzy1mr/L6OljI\nDF8KXVpAUt90PzT9e+JbGN6/XIh/eWNQh4wVGrUC98UKDGpBSDXchqtUoVJXek9c\nPbx1RmEkwzxewJbS+AwYIho3UtYH1jUSejg+DNmIvyHsIlHCCXy1ukwXJstRHfUi\n5QIDAQAB\n-----END PUBLIC KEY-----'
 p5
 sS'hashed_uuid'
 p6
-S'uuid'
+S'\xe0V\x9f\x80W\xca\xc7\x11\xb2mS\x0e\xffp\nW\xc8\x88\xfe\xdf{\xdb\xa3dZd\xbd\xb4\xedJ\x87\x18'
 p7
 sS'shared_key'
 p8

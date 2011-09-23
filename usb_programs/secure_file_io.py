@@ -38,7 +38,7 @@ class SecureFileIO(object):
         }
         cls.save_web_data(web_data)
 
-     @classmethod
-     def load_url_data(cls,url):
-         web_data = cls.load_web_data()
-         return web_data.get(url,None)
+    @classmethod
+    def load_url_data(cls,url):
+        web_data = cls.load_web_data()
+        return web_data.get(url,None)
