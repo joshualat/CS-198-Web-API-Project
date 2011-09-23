@@ -49,6 +49,15 @@ class PKA(object):
         return decrypted_message
 
     @classmethod
+    def decrypt_or_none(cls,private_key,message):
+        try:
+            return cls.decrypt(private_key,message)
+        except PKAError:
+            return None
+        except Exception:
+            return None
+
+    @classmethod
     def generate_keys(cls,key_size=2048):
         """generate private and public keys"""
         random_generator = Random.new().read
@@ -61,7 +70,16 @@ if __name__ == "__main__":
     data = {"key1":"value1","key2":[1,2,3]}
     encrypted_message = PKA.encrypt(pub_key,data)
     decrypted_message = PKA.decrypt(priv_key,encrypted_message)
+    print "\n"+"-"*50+"\n"
+    print "Private Key:"
+    print priv_key
+    print "\n"+"-"*50+"\n"
+    print "Public Key:"
+    print pub_key
+    print "\n"+"-"*50+"\n"
     print "Encrypted Message:"
     print encrypted_message
+    print "\n"+"-"*50+"\n"
     print "Decrypted Data:"
     print decrypted_message
+    print "\n"+"-"*50+"\n"

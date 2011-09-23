@@ -90,14 +90,10 @@ if __name__ == "__main__":
     data = {"key1":"value1","key2":[1,2,3]}
     encrypted_message = SKA.encrypt(shared_key,data)
     decrypted_message = SKA.decrypt(shared_key,encrypted_message)
-    print "\n"+"-"*50+"\n"
     print "Shared Key:"
     print shared_key
-    print "\n"+"-"*50+"\n"
     print "Encrypted Message:"
     print encrypted_message.encode("base64")
-    print "\n"+"-"*50+"\n"
     print "Decrypted Data:"
     print decrypted_message
-    print "\n"+"-"*50+"\n"
 
