@@ -1,5 +1,5 @@
 IMMEDIATE TODO:
-recreate security_SKA.py functions (make static / classmethods)
+create WEB API
 
 IMPORTANT LINKS:
 [link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
