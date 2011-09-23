@@ -71,15 +71,23 @@ if __name__ == "__main__":
     encrypted_message = PKA.encrypt(pub_key,data)
     decrypted_message = PKA.decrypt(priv_key,encrypted_message)
     print "\n"+"-"*50+"\n"
+
     print "Private Key:"
     print priv_key
+
     print "\n"+"-"*50+"\n"
+
     print "Public Key:"
     print pub_key
+
     print "\n"+"-"*50+"\n"
+
     print "Encrypted Message:"
     print encrypted_message
+
     print "\n"+"-"*50+"\n"
+
     print "Decrypted Data:"
     print decrypted_message
+
     print "\n"+"-"*50+"\n"
