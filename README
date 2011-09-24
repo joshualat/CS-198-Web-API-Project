@@ -21,3 +21,4 @@ git commit -m "Some message here" -a
 QUICK SETUP (for testsite):
 easy_install pycrypto
 easy_install --upgrade pycrypto
+python secure_start.py
