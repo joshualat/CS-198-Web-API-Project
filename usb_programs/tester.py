@@ -1,5 +1,5 @@
 from secure_web_connection import *
-swc = SecureWebConnection("http://localhost:8000/")
+swc = SecureWebConnection("http://localhost:8000/","hashedpassword")
 swc.exchange_keys()
 swc.generate_shared_key()
 swc.transfer_shared_key()

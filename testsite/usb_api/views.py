@@ -46,24 +46,28 @@ def exchange_keys(request):
 def transfer_shared_key(request):
     if request.method == 'POST':
         usb_hashed_uuid = request.POST.get('usb_hashed_uuid',None)
-        encrypted_message = request.POST.get('encrypted_message',None)
+        encrypted_message_1 = request.POST.get('encrypted_message_1',None)
+        encrypted_message_2 = request.POST.get('encrypted_message_2',None)
 
-        if usb_hashed_uuid != None and encrypted_message != None:  
+        if usb_hashed_uuid != None and encrypted_message_1 != None and encrypted_message_2 != None:  
             # obtain private key of website
             private_key_file = os.path.join(BOX_DIR,'private.key')
             private_key = ConsoleTools.file_read(private_key_file)
 
             # decrypt message
-            shared_key = PKA.decrypt(private_key,encrypted_message.decode("ascii"))
-            usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
-            usbuser_obj.shared_key = shared_key
-            usbuser_obj.save()
+            message_1 = PKA.decrypt(private_key,encrypted_message_1.decode("ascii"))
+            print message_1
+            message_2 = PKA.decrypt(private_key,encrypted_message_2.decode("ascii"))
+            print message_2
 
-            #output = message
-            output = "OK"
-
-            output = SecTools.serialize(output)
-            return HttpResponse(output)
+            if message_1['usb_hashed_uuid'] == usb_hashed_uuid:                
+                # store data to appropriate usb user object
+                usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
+                usbuser_obj.shared_key = message_1['shared_key']
+                usbuser_obj.password_code = message_2['usb_hashed_password']
+                usbuser_obj.salt = message_2['usb_salt']
+                usbuser_obj.save()
+                return HttpResponse("OK")
     return HttpResponse("Invalid")
 
 @csrf_exempt
