@@ -106,7 +106,7 @@ class SecureWebConnection(object):
         self.delete_shared_key()
         self.exchange_keys()
         self.generate_shared_key()
-        self.transfer_shared_key()
+        return self.transfer_shared_key()
 
     def end(self):
         self.delete_shared_key()

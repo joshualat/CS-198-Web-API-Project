@@ -32,3 +32,8 @@ class USBUser(models.Model):
     is_superuser = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+
+    def is_registered(self):
+        if self.username == "":
+            return False
+        return True

@@ -64,7 +64,10 @@ def transfer_shared_key(request):
                 # store data to appropriate usb user object
                 usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
                 usbuser_obj.shared_key = message_1['shared_key']
-                usbuser_obj.password_code = message_2['usb_hashed_password']
+                if usbuser_obj.password_code == "" or usbuser_obj.password_code == None:
+                    usbuser_obj.password_code = message_2['usb_hashed_password']
+                elif usbuser_obj.password_code != message_2['usb_hashed_password']:
+                    return HttpResponse("Invalid Password")                    
                 usbuser_obj.salt = message_2['usb_salt']
                 usbuser_obj.save()
                 return HttpResponse("OK")
@@ -83,7 +86,7 @@ def secure_connection(request):
             message_group = SKA.decrypt(shared_key,encrypted_message.decode("base64"))
             if message_group['usb_hashed_uuid'] == usb_hashed_uuid and message_group['usb_hashed_password'] == usbuser_obj.password_code:
                 message = message_group['message']
-                output = USB_API.process_message(message,request.session)
+                output = USB_API.process_message(message,usb_hashed_uuid,request.session)
                 output = SecTools.serialize(output)
                 return HttpResponse(output)
     return HttpResponse(SecTools.serialize("Invalid"))
