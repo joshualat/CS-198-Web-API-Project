@@ -9,7 +9,7 @@ from lib.SKA import *
 from secure_web_connection import *
 from getpass import getpass
 
-MAIN_SITE = 'joshua.lat'
+MAIN_SITE = 'http://localhost:8000/'
 ATTEMPTS = 3
 path = ''#replace with path to drive (end it with /)
 
