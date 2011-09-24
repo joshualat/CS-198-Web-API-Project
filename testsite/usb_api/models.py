@@ -7,12 +7,12 @@ GENDER_CHOICES = (
 
 class USBUser(models.Model):
     #required fields
-    usb_code = models.CharField(max_length=100)
+    usb_code = models.CharField(max_length=1000)
     username = models.CharField(max_length=100)
-    password_code = models.CharField(max_length=100)
+    password_code = models.CharField(max_length=1000)
     shared_key = models.CharField(max_length=1000)
     public_key = models.CharField(max_length=1000)
-    salt = models.CharField(max_length=50)
+    salt = models.CharField(max_length=100)
     one_time_password = models.CharField(max_length=1000)
 
     first_name = models.CharField(max_length=100)
