@@ -59,5 +59,8 @@ class SecureWebConnection(object):
         self.hashed_uuid = page['web_hashed_uuid']
         self.save()
 
+    def generate_shared_key(self):
+        pass
+
     def transfer_shared_key(self):
         pass
