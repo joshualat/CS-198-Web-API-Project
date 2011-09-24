@@ -2,6 +2,8 @@ from secure_file_io import *
 from lib.ConsoleTools import *
 from lib.ConnectTools import *
 from lib.SecTools import *
+from lib.SKA import *
+from lib.PKA import *
 
 # Secure Web Connection Class
 """
@@ -47,6 +49,9 @@ class SecureWebConnection(object):
     def web_public_key(self):
         return self.public_key
 
+    def web_hashed_uuid(self):
+        return self.hashed_uuid
+
     def exchange_keys(self):
         target_url = self.url + "usb/exchange_keys"
         params = {
@@ -60,7 +65,24 @@ class SecureWebConnection(object):
         self.save()
 
     def generate_shared_key(self):
-        pass
+        if self.shared_key == "":
+            self.shared_key = SKA.generate_key()
+            self.save()
+        return self.shared_key
+
+    def delete_shared_key(self):
+        self.shared_key = ""
+        self.save()
 
     def transfer_shared_key(self):
-        pass
+        shared_key = self.generate_shared_key()
+        encrypted_message = PKA.encrypt(self.web_public_key(),shared_key)
+        target_url = self.url + "usb/transfer_shared_key"
+        params = {
+            "usb_hashed_uuid":self.usb_hashed_uuid(),
+            "encrypted_message":encrypted_message,
+        }
+
+        page = ConnectTools.request_post(target_url,params)
+        page = SecTools.deserialize(page)
+        return page

@@ -36,7 +36,7 @@ class PKA(object):
     @classmethod
     def decrypt(cls,private_key,message,pickler=pickle):
         """decrypt and unpickle a python object"""
-        message = pickler.loads(message[len(cls.PICKLE_PAD):])
+        message = pickler.loads(str(message[len(cls.PICKLE_PAD):]))
         sig = message[1]
         hmac_message = message[0]
         message = (message[0],)
