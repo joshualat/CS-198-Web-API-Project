@@ -45,15 +45,52 @@ class ConsoleTools(object):
             return str(secs) + " second"
         else:
             return str(secs) + " seconds"
+	
+	@classmethod
+	def format_usb(cls,password):
+		''' Formats a usb for our use. '''
+		#detect which target drive to put file ito (or input from if necessary).
+		#erase all data from the target drive.
+		#format the drive, i.e. create truecrypt container in the target drive
+		#call read_usb with this password
+		#return True if successful, False (or exception) otherwise
+		return True
+	
+	@classmethod
+	def read_usb(cls,password):
+		''' Reads the encrypted files in usb. '''
+		#using this password, mount the truecrypt container to a virtual disk.
+		#return True if successful, False (or exception) otherwise
+		return True
 
+	@classmethod
+	def close_usb(cls,password):
+		#Unmount the virtual disk
+		pass
+	
+	@classmethod
+	def plain_file_write(cls,filename,text):
+		''' Writes to file. '''
+		#write text into filename in the target drive WITHOUT encryption, i.e., plain write.
+		#note that it must be written in the target drive, NOT the virtual disk.
+        target = open(filename, 'w')
+        target.write(text)
+        target.close()
+		
     @classmethod
     def file_write(cls,filename,text):
+		''' Writes encrypted file. '''
+		#write text into filename in the virtual disk WITH encryption.
+		#note that it must be written in the virtual disk, NOT the target drive.
         target = open(filename, 'w')
         target.write(text)
         target.close()
 
     @classmethod
     def file_read(cls,filename):
+		''' Reads from encrypted file. '''
+		#read text from filename in the virtual disk WITH encryption.
+		#note that it must be read from the virtual disk, NOT the target drive.
         if os.path.exists(filename):
             return file(filename).read()
         else:
