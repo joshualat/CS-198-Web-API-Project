@@ -1,6 +1,6 @@
 import os.path, os
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from lib.ConsoleTools import *
 from lib.SecTools import *
@@ -14,6 +14,27 @@ BOX_DIR = os.path.join(settings.PROJECT_DIR,'usb_api','box')
 def home(request):    
     """Introduction, Tutorials"""
     return HttpResponse("Home")
+
+def login(request):
+    if request.method == 'GET':
+        one_time_pass = request.GET.get('one_time_pass',None)
+        usb_hashed_uuid = request.GET.get('usb_hashed_uuid',None)
+        redirect_url = request.GET.get('redirect_url',None)
+        if one_time_pass != None and usb_hashed_uuid != None and redirect_url != None:
+            usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
+            shared_key = usbuser_obj.shared_key
+            generated_one_time_pass = SecTools.generate_hash(shared_key).encode("hex")
+            if generated_one_time_pass == one_time_pass:
+                request.session['usb_code'] = usb_hashed_uuid
+                usbuser_obj.shared_key = ""
+                usbuser_obj.save()
+                return HttpResponseRedirect(redirect_url)
+        request.session['usb_code'] = None
+    return HttpResponse("Invalid")
+
+def logout(request):
+    request.session['usb_code'] = None
+    return HttpResponse("Logged out successfully")
 
 @csrf_exempt
 def exchange_keys(request):

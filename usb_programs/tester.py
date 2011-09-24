@@ -23,5 +23,34 @@ m2 = {
     }
 }
 
-print swc.secure_connection(m2)
+m3 = {
+    'action':'edit_user_info',
+    'data':{
+        'username':'josh',
+        'first_name':'Joshua',
+        'last_name':'Lat',
+        'email':'akosijoshualat@gmail.com',
+        'sex':'M',
+        'birthdate':datetime.datetime(1990,4,17),
+    }
+}
+
+m4 = {
+    'action':'get_user_info',
+    'data':{}
+}
+
+m5 = {
+    'action':'login',
+    'data':{}
+}
+
+m6 = {
+    'action':'logout',
+    'data':{}
+}
+
+print swc.secure_connection(m3)
+print swc.secure_connection(m5)
+#print swc.secure_connection(m6)
 swc.end()

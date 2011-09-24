@@ -6,6 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^usb/', include('testsite.usb_api.urls')),
+    url(r'^', include('testsite.core.urls')),
     # Examples:
     # url(r'^$', 'testsite.views.home', name='home'),
     # url(r'^testsite/', include('testsite.foo.urls')),

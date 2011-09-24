@@ -42,7 +42,7 @@ class SecureWebConnection(object):
     def usb_hashed_uuid(self):
         config = ConsoleTools.file_read('box/config')
         uuid = config.split("\n")[0]
-        return SecTools.generate_hash(uuid).encode("base64")
+        return SecTools.generate_hash(uuid).encode("hex")
 
     def usb_salt(self):
         config = ConsoleTools.file_read('box/config')
@@ -126,4 +126,10 @@ class SecureWebConnection(object):
         }
         page = ConnectTools.request_post(target_url,params)
         page = SecTools.deserialize(page)
+        if message!=None and message.get('action',None) == 'login':
+            login_url = ConnectTools.browser_open(self.url + "usb/login",page['message'])
+            print "Login URL: " + login_url
+            self.delete_shared_key()
+        if message!=None and message.get('action',None) == 'logout':
+            ConnectTools.browser_open(self.url + "usb/logout")
         return page
