@@ -42,6 +42,18 @@ def exchange_keys(request):
     return HttpResponse("Invalid")
 
 @csrf_exempt
+def transfer_shared_key(request):
+    if request.method == 'POST':
+        pass
+    return HttpResponse("Invalid")
+
+@csrf_exempt
+def secure_connection(request):
+    if request.method == 'POST':
+        pass
+    return HttpResponse("Invalid")
+
+@csrf_exempt
 def test(request):
     if request.method == 'POST':
         message = 'POST:' + str(request.POST.get('message',None))

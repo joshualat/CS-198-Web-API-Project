@@ -58,3 +58,6 @@ class SecureWebConnection(object):
         self.public_key = page['web_public_key']
         self.hashed_uuid = page['web_hashed_uuid']
         self.save()
+
+    def transfer_shared_key(self):
+        pass
