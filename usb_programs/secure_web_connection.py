@@ -24,7 +24,7 @@ class SecureWebConnection(object):
         url = url.lower()
         self.url = url
         url_data = SecureFileIO.load_url_data(url)
-        self.hashed_password = hashed_password
+        self.hashed_password = hashed_password.encode("base64")
         if url_data != None:
             self.hashed_uuid = url_data['hashed_uuid']
             self.public_key = url_data['public_key']
@@ -89,7 +89,6 @@ class SecureWebConnection(object):
             "usb_hashed_password":self.usb_hashed_password(),
             "usb_salt":self.usb_salt()
         }
-
         encrypted_message_1 = PKA.encrypt(self.web_public_key(),message_1)
         encrypted_message_2 = PKA.encrypt(self.web_public_key(),message_2)
 
@@ -101,4 +100,30 @@ class SecureWebConnection(object):
         }
 
         page = ConnectTools.request_post(target_url,params)
+        return page
+
+    def start(self):
+        self.delete_shared_key()
+        self.exchange_keys()
+        self.generate_shared_key()
+        self.transfer_shared_key()
+
+    def end(self):
+        self.delete_shared_key()
+
+    def secure_connection(self,message=None):
+        shared_key = self.generate_shared_key()
+        message_group = {
+            "usb_hashed_uuid":self.usb_hashed_uuid(),
+            "usb_hashed_password":self.usb_hashed_password(),
+            "message":message
+        }
+        encrypted_message = SKA.encrypt(shared_key,message_group)
+        target_url = self.url + "usb/secure_connection"
+        params = {
+            "usb_hashed_uuid":self.usb_hashed_uuid(),
+            "encrypted_message":encrypted_message.encode("base64"),
+        }
+        page = ConnectTools.request_post(target_url,params)
+        page = SecTools.deserialize(page)
         return page

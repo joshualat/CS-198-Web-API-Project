@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from lib.ConsoleTools import *
 from lib.SecTools import *
 from lib.PKA import *
+from lib.SKA import *
+from usb_api import *
 from models import *
 
 BOX_DIR = os.path.join(settings.PROJECT_DIR,'usb_api','box')
@@ -40,7 +42,7 @@ def exchange_keys(request):
             output = SecTools.serialize(output)
 
             return HttpResponse(output)
-    return HttpResponse("Invalid")
+    return HttpResponse(SecTools.serialize("Invalid"))
 
 @csrf_exempt
 def transfer_shared_key(request):
@@ -56,9 +58,7 @@ def transfer_shared_key(request):
 
             # decrypt message
             message_1 = PKA.decrypt(private_key,encrypted_message_1.decode("ascii"))
-            print message_1
             message_2 = PKA.decrypt(private_key,encrypted_message_2.decode("ascii"))
-            print message_2
 
             if message_1['usb_hashed_uuid'] == usb_hashed_uuid:                
                 # store data to appropriate usb user object
@@ -73,8 +73,20 @@ def transfer_shared_key(request):
 @csrf_exempt
 def secure_connection(request):
     if request.method == 'POST':
-        pass
-    return HttpResponse("Invalid")
+        usb_hashed_uuid = request.POST.get('usb_hashed_uuid',None)
+        encrypted_message = request.POST.get('encrypted_message',None)
+
+        if usb_hashed_uuid != None and encrypted_message != None:  
+            usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
+            shared_key = usbuser_obj.shared_key
+
+            message_group = SKA.decrypt(shared_key,encrypted_message.decode("base64"))
+            if message_group['usb_hashed_uuid'] == usb_hashed_uuid and message_group['usb_hashed_password'] == usbuser_obj.password_code:
+                message = message_group['message']
+                output = USB_API.process_message(message,request.session)
+                output = SecTools.serialize(output)
+                return HttpResponse(output)
+    return HttpResponse(SecTools.serialize("Invalid"))
 
 @csrf_exempt
 def test(request):
