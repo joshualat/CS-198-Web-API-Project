@@ -117,6 +117,18 @@ def format_usb():
 	if confirm == 'y':
 		password = input_password()
 		#format usb with password
+		
+		#Formats USB to FAT32 format
+		if sys.platform == 'win32' or sys.platform == 'cygwin':
+		    drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
+		    os.system('format %s:  /FS:FAT32' % (drive))
+		else:
+		    print 'Please identify the USB flash drive\'s partition name.'
+		    os.system('sudo fdisk -l')
+		    drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
+		    os.system('sudo umount %s' % (drive))
+		    os.system('sudo mkfs.vfat %s' % (drive))
+		    
 		return True
 	return False
 
