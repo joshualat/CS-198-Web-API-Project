@@ -1,5 +1,4 @@
 import sys 
-from secure_web_connection import *
 from util import *
 
 
@@ -53,9 +52,10 @@ def edit_info():
 def update_info(target_conn=None):
     '''updates user information stored to website '''
     if not target_conn:
-        target_conn=SecureWebConnection(url_choose(), hashed_password())
-    target_conn.secure_message('edit_
-    #send to website
+        target_conn=connect()
+    user_info = SecureFileIO.load_usb_data()
+    page = target_conn.secure_message('edit_user_info', **user_info)
+    print page
     
     
 def info(off=1):

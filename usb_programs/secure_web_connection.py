@@ -24,6 +24,7 @@ class SecureWebConnection(object):
         url = url.lower()
         self.url = url
         url_data = SecureFileIO.load_url_data(url)
+        print hashed_password
         self.hashed_password = hashed_password.encode("base64")
         if url_data != None:
             self.hashed_uuid = url_data['hashed_uuid']
