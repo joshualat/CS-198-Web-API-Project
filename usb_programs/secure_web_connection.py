@@ -136,6 +136,10 @@ class SecureWebConnection(object):
             "encrypted_message":encrypted_message.encode("base64"),
         }
         page = ConnectTools.request_post(target_url,params)
+        if page == 'Invalid':
+            return page
+        print page
+        page = SKA.decrypt(shared_key,page.decode("base64"))
         page = SecTools.deserialize(page)
         if message!=None and message.get('action',None) == 'login':
             login_url = ConnectTools.browser_open(self.url + "usb/login",page['message'])
