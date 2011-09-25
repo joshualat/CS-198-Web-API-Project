@@ -1,5 +1,3 @@
-# usboys.py, for lack of better name at the moment
-
 #future: separate create usb from others
 
 import sys
@@ -8,6 +6,8 @@ from lib.PKA import *
 from lib.SKA import *
 from secure_web_connection import *
 from getpass import getpass
+from decorators import *
+import config
 
 MAIN_SITE = 'http://localhost:8000/'
 ATTEMPTS = 3
@@ -51,27 +51,8 @@ def help(msg=None):
 
 password = None
 
-def usb_login_needed(function):
-	def new_function(*args, **kwargs):
-		#require existence
-		if not login_usb(): return
-		function(*args, **kwargs)
-	return new_function
 
-def login_usb():
-	'''gathers password for reading of usb data'''
-	global password
-	if password: return True
-	message = 'Enter USB password: '
-	for i in range(1, ATTEMPTS + 1):
-		password = getpass(message)
-		#validate password. set to None if bad.
-		if password: return True
-		message = 'Try again. Enter USB password: '
-	print 'No more attempts.'
-	return False
-
-@usb_login_needed
+@usb_login_first
 def edit_info():
 	'''edits user information stored on usb drive (and perhaps website) '''
 	#get data from disk
@@ -91,7 +72,7 @@ def input_password(msg = 'Enter password'):
 		if pass1 == pass2: return pass1
 		print "Passwords didn't match."
 
-@usb_login_needed
+@usb_login_first
 def edit_password():
 	'''edits usb password'''
 	new_pass = input_password()
@@ -110,27 +91,6 @@ def edit():
 	print 'Edit command not found'
 	help_command('edit')
 
-def format_usb():
-	global password
-	''' formats usb for usage. '''
-	confirm = ConsoleTools.accept_input('WARNING: ALL data from USB will be deleted. Continue?',['y','n'])
-	if confirm == 'y':
-		password = input_password()
-		#format usb with password
-		
-		#Formats USB to FAT32 format
-		if sys.platform == 'win32' or sys.platform == 'cygwin':
-		    drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
-		    os.system('format %s:  /FS:FAT32' % (drive))
-		else:
-		    print 'Please identify the USB flash drive\'s partition name.'
-		    os.system('sudo fdisk -l')
-		    drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
-		    os.system('sudo umount %s' % (drive))
-		    os.system('sudo mkfs.vfat %s' % (drive))
-		    
-		return True
-	return False
 
 def create_usb():
 	''' creates usb account: formats usb drive, registers it to main site, and gathers data. '''
@@ -158,20 +118,20 @@ def create_usb():
 	edit_info()
 
 
-@usb_login_needed
+@usb_login_first
 def reg_site(url):
 	''' registers to website '''
 	input_website
 	#get urldata
 	#save urldata
 
-@usb_login_needed
+@usb_login_first
 def reg_site():
 	''' registers to website '''
 	#urlinp user
 	pass
 
-@usb_login_needed
+@usb_login_first
 def login_site():
 	''' logins to website '''
 	#urlchoose user
