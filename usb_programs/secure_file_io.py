@@ -52,4 +52,4 @@ class SecureFileIO(object):
     @classmethod
     def load_usb_data(cls):        
         web_data = ConsoleTools.file_read('box/usb.data')
-        return SecTools.deserialize(web_data) if web_data or {}
+        return SecTools.deserialize(web_data) if web_data else {}
