@@ -33,18 +33,22 @@ class SecureWebConnection(object):
     def save(self):
         SecureFileIO.update_url_data(self.url,self.hashed_uuid,self.public_key,self.shared_key)
 
-    def usb_public_key(self):
+    @classmethod
+    def usb_public_key(cls):
         return ConsoleTools.file_read('box/public.key')
 
-    def usb_private_key(self):
+    @classmethod
+    def usb_private_key(cls):
         return ConsoleTools.file_read('box/private.key')
 
-    def usb_hashed_uuid(self):
+    @classmethod
+    def usb_hashed_uuid(cls):
         config = ConsoleTools.file_read('box/config')
         uuid = config.split("\n")[0]
         return SecTools.generate_hash(uuid).encode("hex")
-
-    def usb_salt(self):
+        
+    @classmethod
+    def usb_salt(cls):
         config = ConsoleTools.file_read('box/config')
         return config.split("\n")[1]
 
@@ -111,6 +115,12 @@ class SecureWebConnection(object):
     def end(self):
         self.delete_shared_key()
 
+    def secure_message(self,action, **kwargs):
+        return self.secure_connection({
+            'action':action,
+            'data':kwargs
+        })
+    
     def secure_connection(self,message=None):
         shared_key = self.generate_shared_key()
         message_group = {

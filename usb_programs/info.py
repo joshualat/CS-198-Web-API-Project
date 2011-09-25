@@ -1,5 +1,4 @@
-import sys
-from decorators import *
+import sys 
 from secure_web_connection import *
 from util import *
 
@@ -9,7 +8,7 @@ required = {
     'first_name': ('first name', ()),
     'last_name': ('last name', ()),
     'email': ('e-mail address', ()),
-    'sex': ('sex', GENDER_CHOICES)),
+    'sex': ('sex', GENDER_CHOICES),
     'birthdate': ('birth date', ()),
 }
 optional = {
@@ -18,7 +17,6 @@ optional = {
     'country': ('country', ()),
 }
 
-info
 '''
     #bogo fields
     usb_code = models.CharField(max_length=1000)
@@ -42,7 +40,7 @@ info
     country = models.CharField(max_length=100)
     '''
     
-@usb_login_first
+@login_first
 def edit_info():
     '''edits user information stored on usb drive '''
     #get data from disk
@@ -51,13 +49,14 @@ def edit_info():
     #save data to disk
     pass
 
-@usb_login_first
+@login_first
 def update_info(target_conn=None):
     '''updates user information stored to website '''
     if not target_conn:
-        #prompt
+        target_conn=SecureWebConnection(url_choose(), hashed_password())
+    target_conn.secure_message('edit_
     #send to website
-    pass
+    
     
 def info(off=1):
     try:
@@ -66,9 +65,9 @@ def info(off=1):
         elif sys.argv[off] == 'upd':
             update_info()
         else:
-            help('Info command not found')
+            help_message('Info command not found')
     except IndexError:
-        help('No info command supplied')
+        help_message('No info command supplied')
     
 if __name__ == '__main__':
     info()

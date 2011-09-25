@@ -49,16 +49,16 @@ class ConsoleTools(object):
     @classmethod
     def format_usb(cls,password):
         ''' Formats a usb for our use. '''
-		#Formats USB to FAT32 format
-		if sys.platform == 'win32' or sys.platform == 'cygwin':
-			drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
-			os.system('format %s:  /FS:FAT32' % (drive))
-		else:
-			print 'Please identify the USB flash drive\'s partition name.'
-			os.system('sudo fdisk -l')
-			drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
-			os.system('sudo umount %s' % (drive))
-			os.system('sudo mkfs.vfat %s' % (drive))
+        #Formats USB to FAT32 format
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
+            os.system('format %s:  /FS:FAT32' % (drive))
+        else:
+            print 'Please identify the USB flash drive\'s partition name.'
+            os.system('sudo fdisk -l')
+            drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
+            os.system('sudo umount %s' % (drive))
+            os.system('sudo mkfs.vfat %s' % (drive))
             
         #create truecrypt container in the target drive
         #call read_usb with this password

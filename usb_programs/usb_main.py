@@ -1,5 +1,10 @@
 #future: separate create usb from others
 
+''' 
+the program's entry point.
+this code cannot run anywhere except for the 'create' command.
+'''
+    
 import sys
 from decorators import *
 from help import *
@@ -30,10 +35,10 @@ if __name__ == "__main__":
         if action.has_key(name):
             action[name](off=2)
         else:
-            help('Command "' + name + '" not found.');
+            help_message('Command "' + name + '" not found.');
         
     except IndexError:
-        help('No command found.')
+        help_message('No command found.')
         
     ConsoleTools.newline(3)
     print 'Program has ended.'

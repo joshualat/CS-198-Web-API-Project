@@ -1,10 +1,14 @@
 import sys
 from lib.ConsoleTools import *
 
+''' 
+help file/information.
+'''
+
 command_info = {
     'create'    : [('',          'create usb account.')],
     'info'      : [('edit',      'edit user information.'),
-                   ('update',    'update user info to a website.')],
+                   ('update',    'update user info to website/s.')],
     'reg'       : [('',          'register to website.')],
     'info_upd'  : [('',          'register to website.')],
     'login'     : [('',          'login to website.')],
@@ -28,18 +32,20 @@ def help_command(command):
     else:
         print 'Error: Command not found.'
 
-def help(msg=None,off=1):
-    if msg:
-        print 'Error:', msg
-        print 'See', quote('help'), 'for help.'
+def help_message(msg=''):
+    ''' display help with message '''
+    print 'Error:', msg
+    print 'See', quote('help'), 'for help.'
+
+def help(off=1):
+    ''' displays help text '''
+    if len(sys.argv) > off:
+        help_command(sys.argv[off])
     else:
-        if len(sys.argv) > off:
-            help_command(sys.argv[off])
-        else:
-            print 'Possible commands:'
-            print command_info.keys()
-            ConsoleTools.newline()
-            print 'See', quote('help <command>'), 'for more details.'
+        print 'Possible commands:'
+        print command_info.keys()
+        ConsoleTools.newline()
+        print 'See', quote('help <command>'), 'for more details.'
 
 if __name__ == "__main__":
     help()

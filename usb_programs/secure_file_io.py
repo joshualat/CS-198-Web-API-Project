@@ -42,3 +42,14 @@ class SecureFileIO(object):
     def load_url_data(cls,url):
         web_data = cls.load_web_data()
         return web_data.get(url,None)
+        
+        
+    @classmethod
+    def save_usb_data(cls,web_data):
+        web_data = SecTools.serialize(web_data)
+        ConsoleTools.file_write('box/usb.data',web_data)
+
+    @classmethod
+    def load_usb_data(cls):        
+        web_data = ConsoleTools.file_read('box/usb.data')
+        return SecTools.deserialize(web_data) if web_data or {}

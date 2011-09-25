@@ -1,1 +1,1 @@
-from decorators import *@usb_login_firstdef change_password(off=1):	'''edits usb password'''	new_pass = input_password()	#change usb password.	pass	if __name__ == "__main__":	change_password()
+from util import *@not_implemented@login_firstdef change_password(off=1):    '''edits usb password'''    new_pass = input_password()    #change password    if __name__ == "__main__":    change_password()
