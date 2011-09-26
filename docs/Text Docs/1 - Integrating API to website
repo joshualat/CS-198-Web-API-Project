@@ -1,4 +1,5 @@
 Integrating API to website
+
 1) Copy usb_api folder and all of its contents to the project directory
 
 2) Run secure_start.py inside usb_api. 
