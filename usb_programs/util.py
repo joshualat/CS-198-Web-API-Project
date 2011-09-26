@@ -11,7 +11,6 @@ GENDER_CHOICES = (
 )
 
 password = None
-MAIN_SITE = 'http://localhost:8000/'
 LOGIN_ATTEMPTS = 3
 
 #decorators

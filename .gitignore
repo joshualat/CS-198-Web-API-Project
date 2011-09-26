@@ -6,3 +6,5 @@ config
 web.data
 local_settings.py
 dev.db
+test_container.txt
+test_folder
