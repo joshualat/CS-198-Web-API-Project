@@ -3,7 +3,6 @@ import hashlib
 import cPickle as pickle
 from Crypto.Random import random
 
-
 # SecTools (Security Tools) Class
 
 class SecTools(object):
