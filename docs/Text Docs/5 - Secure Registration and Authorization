@@ -1,0 +1,131 @@
+Secure Registration and Authorization
+1) Username Exists
+-> USB to Website:
+	{
+		'action' = 'username_exists',
+		'data':{'username':<desired username>}
+	}
+
+-> Website checks if username already exists
+
+-> Website to USB
+	{
+		'success':True,
+		'message':<True if username already exists>,
+		'query':<query received from USB>
+	}
+
+2) Register
+-> USB to Website:
+	{
+		'action' = 'register',
+		'data':{
+			'username':<USB username>,
+			'first_name':<USB first name>,
+			'last_name':<USB last name>,
+			'email':<USB email address>,
+			'sex':<USB sex [M/F]>,
+			'birthdate':<USB birthdate>,
+			'address':<USB address (optional)>,
+			'contact_number':<USB contact_number (optional)>,
+			'country':<USB country (optional)>
+		}
+	}
+
+-> Website registers the user
+
+-> Website to USB
+	{
+		'success':True,
+		'message':'Successfully registered user',
+		'query':<query received from USB>
+        }
+
+3) Get User Info
+
+-> USB to Website:
+	{
+		'action' = 'get_user_info',
+		'data':{}
+	}
+
+-> Website retrieves user information
+
+-> Website to USB
+	{
+		'username':<User's username>,
+		'first_name':<User's first_name>,
+		'last_name':<User's last_name>,
+		'email':<User's email>,
+		'sex':<User's sex>,
+		'birthdate':<User's birthdate>,
+		'address':<User's address>,
+		'contact_number':<User's contact_number>,
+		'country':<User's country>
+        }
+
+4) Edit User Info
+-> USB to Website:
+	{
+		'action' = 'edit_user_info',
+		'data':{
+			'username':<USB username>,
+			'first_name':<USB first name>,
+			'last_name':<USB last name>,
+			'email':<USB email address>,
+			'sex':<USB sex [M/F]>,
+			'birthdate':<USB birthdate>,
+			'address':<USB address (optional)>,
+			'contact_number':<USB contact_number (optional)>,
+			'country':<USB country (optional)>
+		}
+	}
+
+-> Website edits user info
+
+-> Website to USB
+	{
+		'success':True,
+		'message':'Successfully edited user info',
+		'query':<query received from USB>
+        }
+
+5) Login
+-> USB to Website
+	{
+		'action' = 'login',
+		'data':{}
+	}
+
+-> Website generates one time pass from shared key
+
+-> Website to USB
+	{
+		'one_time_pass':<one time password>,
+		'redirect_url':<website's redirect url>,
+		'usb_hashed_uuid':<USB's hashed uuid>,
+	}
+
+-> USB opens browser:
+	url = usb/login
+	params = return message of website
+
+-> Website deletes one time pass / shared key
+
+6) Logout
+-> USB to Website
+	{
+		'action' = 'logout',
+		'data':{}
+	}
+
+-> Website to USB
+	{
+		'success':True,
+		'message':{},
+		'query':message,
+	}
+
+-> USB opens browser:
+	url = usb/logout
+	params = none
