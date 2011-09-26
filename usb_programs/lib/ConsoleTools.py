@@ -25,15 +25,14 @@ class ConsoleTools(object):
 
     @classmethod
     def accept_input(cls,text="Press ENTER to continue...",list_of_accepted_values=None):
-        if list_of_accepted_values == None or list_of_accepted_values == []:
+        if not list_of_accepted_values:#any empty sequence i also false
             user_input = raw_input(text)
         else:
             accept = False
             user_input = ""
-            while accept!=True:
+            while not accept:
                 user_input = raw_input(text+" ["+'/'.join([str(x) for x in list_of_accepted_values])+"]: ")
-                if user_input in list_of_accepted_values:
-                    accept = True
+                accept = (user_input in list_of_accepted_values)
         return user_input
 
     @classmethod
@@ -70,37 +69,39 @@ class ConsoleTools(object):
             os.system('sudo umount %s' % (drive))
             os.system('sudo mkfs.vfat %s' % (drive))
             
+        #TODO
         #create truecrypt container in the target drive
-        #call read_usb with this password
-        #return True if successful, False (or exception) otherwise
-        return True
+        #return the path to the truecrypt container (e.g. 'D:/data/sample.mp4') if successful
+        #(end path with '/')
+        #return None (or raise exception) otherwise
+        path='test_container.txt'
+        ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.')
+        return path
     
     @classmethod
-    def read_usb(cls,password):
+    def read_usb(cls,path,password):
         ''' Reads the encrypted files in usb. '''
+        #TODO
         #using this password, mount the truecrypt container to a virtual disk.
-        #return True if successful, False (or exception) otherwise
-        return True
-
+        #prompt letter of virtual disk if necessary
+        #return the path to the virtual disk (e.g. 'M:/') if successful
+        #(end path with '/')
+        #return None (or raise exception) otherwise
+        if path == None:
+            return None
+        dir='test/test_folder/'
+        os.makedir(dir)
+        return dir
+    
     @classmethod
-    def close_usb(cls,password):
+    def close_usb(cls,path,diskpath,password):
+        #TODO
         #Unmount the virtual disk
         pass
     
     @classmethod
-    def plain_file_write(cls,filename,text):
-        ''' Writes to file. '''
-        #write text into filename in the target drive WITHOUT encryption, i.e., plain write.
-        #note that it must be written in the target drive, NOT the virtual disk.
-        target = open(filename, 'w')
-        target.write(text)
-        target.close()
-        
-    @classmethod
     def file_write(cls,filename,text):
         ''' Writes encrypted file. '''
-        #write text into filename in the virtual disk WITH encryption.
-        #note that it must be written in the virtual disk, NOT the target drive.
         target = open(filename, 'w')
         target.write(text)
         target.close()
@@ -108,8 +109,6 @@ class ConsoleTools(object):
     @classmethod
     def file_read(cls,filename):
         ''' Reads from encrypted file. '''
-        #read text from filename in the virtual disk WITH encryption.
-        #note that it must be read from the virtual disk, NOT the target drive.
         if os.path.exists(filename):
             return file(filename).read()
         else:

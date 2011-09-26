@@ -1,5 +1,10 @@
 from lib.ConsoleTools import *
+from help import *
+from util import *
+from secure_start import *
+import shutil
 
+@with_help('create')
 def create_usb(off=1):
     ''' 
     creates usb account: formats usb drive, registers it to main site, and gathers data. 
@@ -10,29 +15,22 @@ def create_usb(off=1):
     if confirm == 'y':
         password = input_password()
         
-        ConsoleTools.format_usb(password)
-        
-        print "Generating new Private and Public Keys (this may take a while)..."
-        start_time = ConsoleTools.start_timer()
-        priv_key, pub_key = PKA.generate_keys()
-        total_time = ConsoleTools.end_timer(start_time)
-        print "Private and Public Keys successfully generated in " + total_time + "."
-        print "Saving Private Key to 'box/private.key'..."
-        ConsoleTools.file_write(path + 'box/private.key',priv_key)
-        print "Saving Public Key to 'box/public.key'..."
-        ConsoleTools.file_write(path + 'box/public.key',pub_key)
-        print "Private and Public Key successfully saved."
-        ConsoleTools.newline()
-        print "Generating UUID and Salt..."
-        uuid = SecTools.generate_uuid()
-        salt = SecTools.generate_salt()
-        print "Saving UUID and Salt to 'box/config'"
-        text = uuid + "\n" + salt
-        ConsoleTools.file_write(path + 'box/config',text)
-        print "UUID and Salt successfully saved."
-        
-        #write programs to usb
-        edit_info()
+        print 'Formatting usb...'
+        path=ConsoleTools.format_usb(password)
+        print 'Opening usb...'
+        diskpath=ConsoleTools.read_usb(path,password)
+        if not (path and diskpath):
+            raise Error()
+        try:
+            diskpath += 'crypt_data/'
+            print 'Copying files to', diskpath, '...'
+            shutil.copytree('.', diskpath)
+            gen_crypt_data(diskpath)
+            print 'Editing information...'
+            edit_info(path=diskpath)
+            print 'New USB account successfully created.'
+        finally:
+            ConsoleTools.close_usb(path,diskpath)
 
 if __name__ == "__main__":
     create_usb()

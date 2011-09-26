@@ -17,20 +17,36 @@ class SecureFileIO(object):
     """
 
     @classmethod
+    def save_data(cls,path,data):
+        """saves the data to <path>.data file"""
+        data = SecTools.serialize(data)
+        ConsoleTools.file_write('box/' + path + '.data',data)
+
+    @classmethod
+    def load_data(cls,path):        
+        """loads the data from <path>.data file"""
+        data = ConsoleTools.file_read('box/' + path + '.data')
+        return SecTools.deserialize(data) if data else {}
+        
+    @classmethod
+    def save_usb_data(cls,usb_data,path=''):
+        """saves the usb data to usb.data file"""
+        cls.save_data(path + 'usb', usb_data)
+
+    @classmethod
+    def load_usb_data(cls,path=''):        
+        """loads the usb data from usb.data file"""
+        return cls.load_data(path + 'usb')
+        
+    @classmethod
     def save_web_data(cls,web_data):
         """saves the web data to web.data file"""
-        web_data = SecTools.serialize(web_data)
-        ConsoleTools.file_write('box/web.data',web_data)
+        cls.save_data('web', web_data)
 
     @classmethod
     def load_web_data(cls):        
         """loads the web data from web.data file"""
-        web_data = ConsoleTools.file_read('box/web.data')
-        if web_data != None:
-            web_data = SecTools.deserialize(web_data)
-        else:
-            web_data = {}
-        return web_data
+        return cls.load_data('web')
 
     @classmethod
     def update_url_data(cls,url,hashed_uuid,public_key,shared_key):
@@ -42,22 +58,18 @@ class SecureFileIO(object):
             'shared_key':shared_key,
         }
         cls.save_web_data(web_data)
-
+    
     @classmethod
     def load_url_data(cls,url):
         """loads the specific url data from the web.data file"""
         web_data = cls.load_web_data()
         return web_data.get(url,None)
         
-        
+    
     @classmethod
-    def save_usb_data(cls,usb_data):
-        """saves the usb data to usb.data file"""
-        usb_data = SecTools.serialize(usb_data)
-        ConsoleTools.file_write('box/usb.data',usb_data)
-
-    @classmethod
-    def load_usb_data(cls):        
-        """loads the usb data from usb.data file"""
-        usb_data = ConsoleTools.file_read('box/usb.data')
-        return SecTools.deserialize(usb_data) if usb_data else {}
+    def update_usb_usernames(cls,url,username):
+        """update the usb data stored in the usb.data file"""
+        usb_data = cls.load_usb_data()
+        usb_data['usernames'][url] = username
+        cls.save_usb_data(usb_data)
+    

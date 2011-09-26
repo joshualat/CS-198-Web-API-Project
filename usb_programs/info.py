@@ -1,53 +1,51 @@
 import sys 
 from util import *
+from help import *
 
 
-required = {
-    'username': ('user name', ()),
+fields = {
     'first_name': ('first name', ()),
     'last_name': ('last name', ()),
     'email': ('e-mail address', ()),
     'sex': ('sex', GENDER_CHOICES),
     'birthdate': ('birth date', ()),
-}
-optional = {
     'address': ('address', ()),
-    'contact_number': ('contact number', ()),
     'country': ('country', ()),
+    'contact_number': ('contact number', ()),
 }
 
 '''
-    #bogo fields
-    usb_code = models.CharField(max_length=1000)
-    password_code = models.CharField(max_length=1000)
-    shared_key = models.CharField(max_length=1000)
-    public_key = models.CharField(max_length=1000)
-    salt = models.CharField(max_length=100)
-    one_time_password = models.CharField(max_length=1000)
-
-    #required fields
-    username = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    birthdate = models.DateTimeField()
-
-    #optional fields
-    address = models.CharField(max_length=200)
-    contact_number = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    '''
+'''
     
+@verify_first
 @login_first
-def edit_info():
-    '''edits user information stored on usb drive '''
-    #get data from disk
-    #edit all fields
-    #if field is optional, ask if edit is wanted (or make a mechanism on how to leave it unchanged)
-    #save data to disk
-    pass
+def edit_info(path=''):
+    '''
+        edits user information stored on usb drive 
+        
+        For simplicity, all data will be optional
+        FROM TESTSITE:
+        
+        #required fields
+        first_name = models.CharField(max_length=100)
+        last_name = models.CharField(max_length=100)
+        email = models.EmailField(max_length=100)
+        sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
+        birthdate = models.DateTimeField()
 
+        #optional fields
+        address = models.CharField(max_length=200)
+        contact_number = models.CharField(max_length=100)
+        country = models.CharField(max_length=100)
+    '''
+    usb_data = SecureFileIO.load_usb_data(path=path)
+    for field, name, choices in fields.items():
+        value = ConsoleTools.accept_input('Input ' + name + ' (leave blank for no change)', choices)
+        if value:
+            usb_data[field] = value
+    SecureFileIO.save_usb_data(usb_data,path=path)
+
+@verify_first
 @login_first
 def update_info(target_conn=None):
     '''updates user information stored to website '''
@@ -57,11 +55,11 @@ def update_info(target_conn=None):
     page = target_conn.secure_message('edit_user_info', **user_info)
     print page
     
-    
-def info(off=1):
+@with_help('info')
+def info(path='',off=1):
     try:
         if sys.argv[off] == 'edit':
-            edit_info()
+            edit_info(path=path)
         elif sys.argv[off] == 'upd':
             update_info()
         else:

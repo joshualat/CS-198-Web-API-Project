@@ -35,7 +35,7 @@ class SecTools(object):
     @classmethod
     def generate_hash(cls,obj,salt=None):
         obj = cls.serialize(obj)
-        if salt != None:
+        if salt:
             obj = obj + salt
         return hashlib.sha256(obj).digest()
 

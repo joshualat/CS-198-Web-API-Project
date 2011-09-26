@@ -15,25 +15,15 @@ from register import *
 from info import *
 from change_password import *
 
-def hello():
+@with_help('hello')
+def hello(off=1):
     print 'Hello World!'
-
-action = {
-    'create': create_usb, 
-    'help': help,
-    'info': info,
-    'newpass': change_password,
-    'reg': reg_site,
-    'login': login_site,
-    'logout': logout_site,
-    'hello': hello,
-}
 
 if __name__ == "__main__":
     try:
         name = sys.argv[1]
-        if action.has_key(name):
-            action[name](off=2)
+        if command_info.has_key(name):
+            command_info[name][0](off=2)
         else:
             help_message('Command "' + name + '" not found.');
         

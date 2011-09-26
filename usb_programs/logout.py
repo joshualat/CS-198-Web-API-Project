@@ -1,5 +1,8 @@
 from util import *
+from help import *
 
+@with_help('logout')
+@verify_first
 @login_first
 def logout_site(off=1):
     ''' logins to website '''
@@ -7,9 +10,9 @@ def logout_site(off=1):
     try:
         conn.start()
         page = conn.secure_message('logout')
+        print page
     finally:
         conn.end()
-    print page
 	
 if __name__ == "__main__":
 	logout_site()

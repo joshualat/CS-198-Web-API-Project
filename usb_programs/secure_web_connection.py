@@ -48,7 +48,7 @@ class SecureWebConnection(object):
         self.url = url
         url_data = SecureFileIO.load_url_data(url)
         self.hashed_password = hashed_password.encode("base64")
-        if url_data != None:
+        if url_data:
             self.hashed_uuid = url_data['hashed_uuid']
             self.public_key = url_data['public_key']
             self.shared_key = url_data['shared_key']
@@ -182,9 +182,9 @@ class SecureWebConnection(object):
 
         page = SKA.decrypt(shared_key,page.decode("base64"))
         page = SecTools.deserialize(page)
-        if message!=None and message.get('action',None) == 'login':
+        if message and message.get('action',None) == 'login':
             login_url = ConnectTools.browser_open(self.url + "usb/login",page['message'])
             self.delete_shared_key()
-        if message!=None and message.get('action',None) == 'logout':
+        if message and message.get('action',None) == 'logout':
             ConnectTools.browser_open(self.url + "usb/logout")
         return page
