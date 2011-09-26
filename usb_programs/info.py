@@ -18,7 +18,6 @@ fields = {
 '''
     
 @verify_first
-@login_first
 def edit_info(path=''):
     '''
         edits user information stored on usb drive 
@@ -49,14 +48,13 @@ def edit_info(path=''):
     print 'Edit info successful!'
 
 @verify_first
-@login_first
 def update_info(target_conn=None):
     '''updates user information stored to website '''
     if not target_conn:
         target_conn=connect()
     user_info = SecureFileIO.load_usb_data()
     page = target_conn.secure_message('edit_user_info', **user_info)
-    print page
+    pretty_print(page)
     
 @with_help('info')
 def info(path='',off=1):

@@ -6,17 +6,18 @@ from help import *
 def input_username(conn):
     ''' gets username from keyboard, and checks if not taken '''
     while True:
-        username = ConsoleTools.accept_input('Input a username')
+        username = ConsoleTools.accept_input('Input website username: ')
         if username:
-            if not conn.secure_message('username_exists',username=username):
+            page = conn.secure_message('username_exists',username=username)
+            if page['success']:
                 return username
-            print quote(username), 'is already taken'
+            else:
+                pretty_print(page)
         else:
             print 'Empty username not allowed.'
             
 @with_help('reg')
 @verify_first
-@login_first
 def reg_site(off=1):
     ''' registers to website '''
     conn = connect(input=True)
@@ -29,9 +30,10 @@ def reg_site(off=1):
         page = conn.secure_message('register', **usb_data)
         if page['success']:
             SecureFileIO.update_usb_usernames(conn.url, usb_data['username'])
-        print page
+        pretty_print(page)
     finally:
-        conn.end()
+        if conn:
+            conn.end()
     
 if __name__ == "__main__":
     reg_site()

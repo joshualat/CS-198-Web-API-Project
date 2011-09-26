@@ -70,6 +70,8 @@ class SecureFileIO(object):
     def update_usb_usernames(cls,url,username):
         """update the usb data stored in the usb.data file"""
         usb_data = cls.load_usb_data()
+        if not usb_data.has_key('usernames'):
+            usb_data['usernames'] = {}
         usb_data['usernames'][url] = username
         cls.save_usb_data(usb_data)
     
