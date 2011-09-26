@@ -15,23 +15,6 @@ LOGIN_ATTEMPTS = 3
 
 #decorators
 
-def login_first(msg=''):
-    def _dec2(function=None):
-        ''' indicates that login must first be given'''
-        def _dec(func): 
-            def new_function(*args, **kwargs):
-                if not login(msg): return # return if login is unsuccessful
-                return func(*args, **kwargs)
-             
-            new_function.__name__ = func.__name__
-            new_function.__dict__ = func.__dict__
-            new_function.__doc__ = func.__doc__
-             
-            return new_function
-        
-        return _dec(function) if function else _dec
-    return _dec2
-
 def verify_first(function=None):
     ''' indicates that login must first be given'''
     def _dec(func): 
@@ -82,9 +65,8 @@ def set_password(new_pass):
     global password
     password = new_pass
 
-@login_first('website')
-def hashed_password():
-    return SecTools.generate_hash(password,SecureWebConnection.usb_salt())
+def hashed_password(path=''):
+    return ConsoleTools.file_read(path + 'box/hashedpass')
 
 def connect(input=False):
     ''' Create a SecureWebConnection by inputting url and password '''
@@ -94,7 +76,7 @@ def connect(input=False):
     return SecureWebConnection(url, hashed_password())
     
 def login(message=''):
-    '''gathers password for reading of usb data'''
+    ''' gather password '''
     global password
     if password: return True
     
@@ -109,6 +91,14 @@ def login(message=''):
             message = 'Try again. ' + message
     print 'Attempts used up.'
     return False
+
+def usb_data_for_site(url=None):
+    usb_data = SecureFileIO.load_usb_data()
+    if usb_data.has_key('usernames'):
+        if url and usb_data['usernames'].has_key(url):
+            usb_data['username'] = usb_data['usernames'][url]
+        usb_data.pop('usernames')
+    return usb_data
 
 def input_password(msg = 'Enter password'):
     '''gets new password from user two times.'''

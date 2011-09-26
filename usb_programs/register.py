@@ -23,9 +23,7 @@ def reg_site(off=1):
     conn = connect(input=True)
     try:
         conn.start()
-        usb_data = SecureFileIO.load_usb_data()
-        if usb_data.has_key('usernames'):
-            usb_data.pop('usernames')
+        usb_data = usb_data_for_site()
         usb_data['username'] = input_username(conn)
         page = conn.secure_message('register', **usb_data)
         if page['success']:

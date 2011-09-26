@@ -18,33 +18,35 @@ def edit_info(path=''):
     '''
         edits user information stored on usb drive 
     '''
-    usb_data = SecureFileIO.load_usb_data(path=path)
     def input_name(name,choices):
         text = 'Input ' + name
         if not choices:
             text += ': '
         return ConsoleTools.accept_input(text, choices).strip()
+        
+    usb_data = SecureFileIO.load_usb_data(path=path)
     
     for field, field_tuple in fields.items():
         name, choices, required = field_tuple
-        has_name = usb_data.has_key(name) and usb_data['name']
+        has_name = usb_data.has_key(field) and usb_data[field]
         if has_name:
-            print 'Current', name + ':', usb_data['name'],
+            print 'Current', name + ':', usb_data[field] + '.',
         else:
             print 'No', name, 'yet.',
         if required: 
             name += '*'
+        value = ''
         if required and not has_name:
             value = input_name(name,choices)
             while not value:
-                print 'Required field cannot be left blank.'
+                print 'Required field cannot be left blank.',
                 value = input_name(name,choices)
         elif ConsoleTools.accept_input('Change?', ['y','n']) == 'y':
             value = input_name(name,choices)
             if required and not value:
                 print 'Required field cannot be left blank. No change done.'
-                value = None
-        if not required or value != None:
+                value = ''
+        if not required or not has_name or value:
             usb_data[field] = value
     SecureFileIO.save_usb_data(usb_data,path=path)
     print 'Edit info successful!'
@@ -55,7 +57,8 @@ def update_info(target_conn=None):
     '''updates user information stored to website '''
     if not target_conn:
         target_conn=connect()
-    user_info = SecureFileIO.load_usb_data()
+        target_conn.start()
+    user_info = usb_data_for_site(target_conn.url)
     page = target_conn.secure_message('edit_user_info', **user_info)
     pretty_print(page)
     

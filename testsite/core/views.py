@@ -12,7 +12,7 @@ def index(request):
         'email':usbuser_obj.email,
         'sex':usbuser_obj.sex,
     }
-    sample_output = ""
+    sample_output = 'user<a href="http://www.google.com/pacman" target="_blank">_</a>details<br />'
     for output in sample_output_dict:
         sample_output += str(output) + ": " + str(sample_output_dict[output]) + "<br />"
     return HttpResponse(sample_output)

@@ -58,26 +58,26 @@ class SecureWebConnection(object):
         SecureFileIO.update_url_data(self.url,self.hashed_uuid,self.public_key,self.shared_key)
 
     @classmethod
-    def usb_public_key(cls):
+    def usb_public_key(cls,path=''):
         """returns the public key of the USB"""
-        return ConsoleTools.file_read('box/public.key')
+        return ConsoleTools.file_read(path + 'box/public.key')
 
     @classmethod
-    def usb_private_key(cls):
+    def usb_private_key(cls,path=''):
         """returns the private key of the USB"""
-        return ConsoleTools.file_read('box/private.key')
+        return ConsoleTools.file_read(path + 'box/private.key')
 
     @classmethod
-    def usb_hashed_uuid(cls):
+    def usb_hashed_uuid(cls,path=''):
         """returns the hashed uuid of the USB"""
-        config = ConsoleTools.file_read('box/config')
+        config = ConsoleTools.file_read(path + 'box/config')
         uuid = config.split("\n")[0]
         return SecTools.generate_hash(uuid).encode("hex")
         
     @classmethod
-    def usb_salt(cls):
+    def usb_salt(cls,path=''):
         """returns the salt of the USB"""
-        config = ConsoleTools.file_read('box/config')
+        config = ConsoleTools.file_read(path + 'box/config')
         return config.split("\n")[1]
 
     def usb_hashed_password(self):

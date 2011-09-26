@@ -20,20 +20,28 @@ def create_usb(off=1):
         path=ConsoleTools.format_usb(password)
         diskpath=ConsoleTools.read_usb(path,password)
         if not (path and diskpath):
-            raise Error()
+            raise Exception()
         try:
-            diskpath += 'crypt_data/'
-            print 'Copying files to', diskpath, '...'
-            shutil.copytree('.', diskpath)
-            os.makedirs(diskpath + 'box')
+            cryptpath = diskpath + 'crypt_data/'
+            print 'Copying files to', cryptpath, '...'
+            shutil.copytree('.', cryptpath)
+            os.makedirs(cryptpath + 'box')
             print
-            gen_crypt_data(path=diskpath)
-            print
-            print 'Editing information...'
-            edit_info(path=diskpath)
+            gen_crypt_data(path=cryptpath)
+            print 'Hashing password...'
+            hashed = SecTools.generate_hash(password,SecureWebConnection.usb_salt(cryptpath))
+            print "Saving Public Key to", quote(cryptpath + "box/hashedpass") + "..."
+            ConsoleTools.file_write(cryptpath + 'box/hashedpass',hashed)
+            try:
+                print
+                print 'Editing information...'
+                edit_info(path=cryptpath)
+            except:
+                traceback.print_exc()
             print
             print 'New USB account successfully created.'
         finally:
+            print
             ConsoleTools.close_usb(path,diskpath,password)
     else:
         print 'Nothing done.'
