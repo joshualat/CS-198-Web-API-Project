@@ -1,8 +1,9 @@
 from lib.ConsoleTools import *
 from help import *
 from util import *
-from secure_start import *
+from gen_crypt_data import *
 import shutil
+from info import *
 
 @with_help('create')
 def create_usb(off=1):
@@ -14,6 +15,7 @@ def create_usb(off=1):
     confirm = ConsoleTools.accept_input('WARNING: ALL data from USB will be deleted. Continue?',['y','n'])
     if confirm == 'y':
         password = input_password()
+        set_password(password)
         
         print 'Formatting usb...'
         path=ConsoleTools.format_usb(password)
@@ -25,12 +27,15 @@ def create_usb(off=1):
             diskpath += 'crypt_data/'
             print 'Copying files to', diskpath, '...'
             shutil.copytree('.', diskpath)
-            gen_crypt_data(diskpath)
+            os.makedirs(diskpath + 'box')
+            gen_crypt_data(path=diskpath)
             print 'Editing information...'
             edit_info(path=diskpath)
             print 'New USB account successfully created.'
         finally:
-            ConsoleTools.close_usb(path,diskpath)
-
+            ConsoleTools.close_usb(path,diskpath,password)
+    else:
+        print 'No files created.'
+    
 if __name__ == "__main__":
     create_usb()

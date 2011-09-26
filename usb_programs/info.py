@@ -7,7 +7,7 @@ fields = {
     'first_name': ('first name', ()),
     'last_name': ('last name', ()),
     'email': ('e-mail address', ()),
-    'sex': ('sex', GENDER_CHOICES),
+    'sex': ('sex', [x[0] for x in GENDER_CHOICES]),
     'birthdate': ('birth date', ()),
     'address': ('address', ()),
     'country': ('country', ()),
@@ -39,8 +39,9 @@ def edit_info(path=''):
         country = models.CharField(max_length=100)
     '''
     usb_data = SecureFileIO.load_usb_data(path=path)
-    for field, name, choices in fields.items():
-        value = ConsoleTools.accept_input('Input ' + name + ' (leave blank for no change)', choices)
+    for field, name_choices in fields.items():
+        name, choices = name_choices
+        value = ConsoleTools.accept_input('Input ' + name + ' (leave blank for no change): ', choices)
         if value:
             usb_data[field] = value
     SecureFileIO.save_usb_data(usb_data,path=path)
@@ -60,7 +61,7 @@ def info(path='',off=1):
     try:
         if sys.argv[off] == 'edit':
             edit_info(path=path)
-        elif sys.argv[off] == 'upd':
+        elif sys.argv[off] == 'upd' or sys.argv[off] == 'update':
             update_info()
         else:
             help_message('Info command not found')

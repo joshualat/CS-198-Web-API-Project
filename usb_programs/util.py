@@ -10,7 +10,7 @@ GENDER_CHOICES = (
     ('F', 'Female'),
 )
 
-password = None
+password = 'stoo'
 MAIN_SITE = 'http://localhost:8000/'
 LOGIN_ATTEMPTS = 3
 
@@ -37,7 +37,10 @@ def verify_first(function=None):
         def new_function(*args, **kwargs):
             path = kwargs['path'] if kwargs.has_key('path') else ''
             if not os.path.exists(path + 'box'):
-               raise Exception('No usb account exists here.')
+                if path:
+                    raise Exception('No usb account exists in ' + path + '.')
+                else:
+                    raise Exception('No usb account exists here.')
             return func(*args, **kwargs)
          
         new_function.__name__ = func.__name__
@@ -64,6 +67,10 @@ def not_implemented(function=None):
     
     
 #utilities
+
+def set_password(new_pass):
+    global password
+    password = new_pass
 
 @login_first
 def hashed_password():

@@ -20,33 +20,33 @@ class SecureFileIO(object):
     def save_data(cls,path,data):
         """saves the data to <path>.data file"""
         data = SecTools.serialize(data)
-        ConsoleTools.file_write('box/' + path + '.data',data)
+        ConsoleTools.file_write(path + '.data',data)
 
     @classmethod
     def load_data(cls,path):        
         """loads the data from <path>.data file"""
-        data = ConsoleTools.file_read('box/' + path + '.data')
+        data = ConsoleTools.file_read(path + '.data')
         return SecTools.deserialize(data) if data else {}
         
     @classmethod
     def save_usb_data(cls,usb_data,path=''):
         """saves the usb data to usb.data file"""
-        cls.save_data(path + 'usb', usb_data)
+        cls.save_data(path + 'box/usb', usb_data)
 
     @classmethod
     def load_usb_data(cls,path=''):        
         """loads the usb data from usb.data file"""
-        return cls.load_data(path + 'usb')
+        return cls.load_data(path + 'box/usb')
         
     @classmethod
     def save_web_data(cls,web_data):
         """saves the web data to web.data file"""
-        cls.save_data('web', web_data)
+        cls.save_data('box/web', web_data)
 
     @classmethod
     def load_web_data(cls):        
         """loads the web data from web.data file"""
-        return cls.load_data('web')
+        return cls.load_data('box/web')
 
     @classmethod
     def update_url_data(cls,url,hashed_uuid,public_key,shared_key):

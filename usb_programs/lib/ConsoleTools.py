@@ -1,5 +1,7 @@
 import os.path
 from datetime import datetime
+import sys
+import shutil
 
 # ConsoleTools Class
 
@@ -25,6 +27,8 @@ class ConsoleTools(object):
 
     @classmethod
     def accept_input(cls,text="Press ENTER to continue...",list_of_accepted_values=None):
+        if not text:
+            text = ''
         if not list_of_accepted_values:#any empty sequence i also false
             user_input = raw_input(text)
         else:
@@ -58,8 +62,18 @@ class ConsoleTools(object):
     @classmethod
     def format_usb(cls,password):
         ''' Formats a usb for our use. '''
-        #Formats USB to FAT32 format
-        if sys.platform == 'win32' or sys.platform == 'cygwin':
+        
+            
+        #TODO
+        #Format USB to FAT32 format
+        #create truecrypt container in the target drive
+        #return the path to the truecrypt container (e.g. 'D:/data/sample.mp4') if successful
+        #(end path with '/')
+        #return None (or raise exception) otherwise
+        
+        
+        #for testing purposes, comment this...
+        '''if sys.platform == 'win32' or sys.platform == 'cygwin':
             drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
             os.system('format %s:  /FS:FAT32' % (drive))
         else:
@@ -67,14 +81,9 @@ class ConsoleTools(object):
             os.system('sudo fdisk -l')
             drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
             os.system('sudo umount %s' % (drive))
-            os.system('sudo mkfs.vfat %s' % (drive))
+            os.system('sudo mkfs.vfat %s' % (drive))'''
             
-        #TODO
-        #create truecrypt container in the target drive
-        #return the path to the truecrypt container (e.g. 'D:/data/sample.mp4') if successful
-        #(end path with '/')
-        #return None (or raise exception) otherwise
-        path='test_container.txt'
+        path='../test_container.txt'
         ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.')
         return path
     
@@ -89,15 +98,17 @@ class ConsoleTools(object):
         #return None (or raise exception) otherwise
         if path == None:
             return None
-        dir='test/test_folder/'
-        os.makedir(dir)
+        dir='../test_folder/' # let's assume the truecrypt container is unmounted here
+        if os.path.exists(dir):
+            shutil.rmtree(dir)
+        os.makedirs(dir)
         return dir
     
     @classmethod
     def close_usb(cls,path,diskpath,password):
         #TODO
         #Unmount the virtual disk
-        pass
+        pass # let's assume data is written properly
     
     @classmethod
     def file_write(cls,filename,text):

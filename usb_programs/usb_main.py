@@ -14,6 +14,7 @@ from logout import *
 from register import *
 from info import *
 from change_password import *
+from gen_crypt_data import *
 
 @with_help('hello')
 def hello(off=1):
@@ -27,7 +28,7 @@ if __name__ == "__main__":
         else:
             help_message('Command "' + name + '" not found.');
         
-    except IndexError:
+    except IndexError, TypeError:
         help_message('No command found.')
         
     ConsoleTools.newline(3)

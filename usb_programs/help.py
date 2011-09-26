@@ -11,7 +11,7 @@ command_info = {
                 ],
     'info'      : [None, 
                     ('edit',      'edit user information.'),
-                    ('update',    'update user info to website/s.'),
+                    ('upd[ate]',  'update user info to website/s.'),
                 ],
     'reg'       : [None, 
                     ('',          'register to website.'),
@@ -31,6 +31,9 @@ command_info = {
                 ],
     'hello'     : [None, 
                     ('',          'print hello world.'),
+                ],
+    'gen'     : [None, 
+                    ('',          'generate PKA keys and hash.'),
                 ],
 }
 
