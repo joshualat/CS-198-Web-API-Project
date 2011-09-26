@@ -15,6 +15,7 @@ def create_usb(off=1):
     confirm = ConsoleTools.accept_input('WARNING: ALL data from USB will be deleted. Continue?',['y','n'])
     if confirm == 'y':
         password = input_password()
+        print 'pass =', password
         set_password(password)
         
         print 'Formatting usb...'

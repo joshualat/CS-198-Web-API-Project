@@ -76,8 +76,11 @@ def set_password(new_pass):
 def hashed_password():
     return SecTools.generate_hash(password,SecureWebConnection.usb_salt())
 
-def connect():
-    return SecureWebConnection(url_choose(), hashed_password())
+def connect(input=False):
+    url = url_input() if input else url_choose()
+    if not url:
+        raise Exception('No registered websites.')
+    return SecureWebConnection(url, hashed_password())
     
 def login():
     '''gathers password for reading of usb data'''
@@ -105,7 +108,7 @@ def input_password(msg = 'Enter password'):
         
 def url_input():
     ''' asks a valid url from the user '''
-    return ConsoleTools.accept_input("Please enter url")#just a normal input for now
+    return ConsoleTools.accept_input("Please enter url: ")#just a normal input for now
 
 def url_choose():
     '''choose from websites written in drive'''

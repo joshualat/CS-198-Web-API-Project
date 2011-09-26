@@ -6,7 +6,6 @@ this code cannot run anywhere except for the 'create' command.
 '''
     
 import sys
-from decorators import *
 from help import *
 from create import *
 from login import *

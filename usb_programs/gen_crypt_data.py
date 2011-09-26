@@ -70,9 +70,7 @@ def gen(off=1):
         print "Ending program."
         
     else:
-        print "No files created. Ending program."
-
-    ConsoleTools.accept_input()
+        print "No files created. Ending program..."
 
 if __name__=="__main__":
     gen()

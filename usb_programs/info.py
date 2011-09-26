@@ -42,9 +42,11 @@ def edit_info(path=''):
     for field, name_choices in fields.items():
         name, choices = name_choices
         value = ConsoleTools.accept_input('Input ' + name + ' (leave blank for no change): ', choices)
+        value = value.strip()
         if value:
             usb_data[field] = value
     SecureFileIO.save_usb_data(usb_data,path=path)
+    print 'Edit info successful!'
 
 @verify_first
 @login_first

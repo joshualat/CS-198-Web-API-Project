@@ -44,6 +44,8 @@ class SecureWebConnection(object):
     """
 
     def __init__(self,url,hashed_password):
+        if not url:
+            url = ''
         url = url.lower()
         self.url = url
         url_data = SecureFileIO.load_url_data(url)

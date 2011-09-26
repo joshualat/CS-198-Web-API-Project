@@ -19,7 +19,7 @@ def input_username(conn):
 @login_first
 def reg_site(off=1):
     ''' registers to website '''
-    conn = connect()
+    conn = connect(input=True)
     try:
         conn.start()
         usb_data = SecureFileIO.load_usb_data()
