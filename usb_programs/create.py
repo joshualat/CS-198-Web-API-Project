@@ -17,9 +17,7 @@ def create_usb(off=1):
         password = input_password()
         set_password(password)
         
-        print 'Formatting usb...'
         path=ConsoleTools.format_usb(password)
-        print 'Opening usb...'
         diskpath=ConsoleTools.read_usb(path,password)
         if not (path and diskpath):
             raise Error()
@@ -28,14 +26,20 @@ def create_usb(off=1):
             print 'Copying files to', diskpath, '...'
             shutil.copytree('.', diskpath)
             os.makedirs(diskpath + 'box')
+            print
             gen_crypt_data(path=diskpath)
+            print
             print 'Editing information...'
             edit_info(path=diskpath)
+            print
             print 'New USB account successfully created.'
         finally:
             ConsoleTools.close_usb(path,diskpath,password)
     else:
-        print 'No files created.'
+        print 'Nothing done.'
     
 if __name__ == "__main__":
     create_usb()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()

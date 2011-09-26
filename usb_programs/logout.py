@@ -4,7 +4,7 @@ from help import *
 @with_help('logout')
 @verify_first
 def logout_site(off=1):
-    ''' logins to website '''
+    ''' logouts from website '''
     conn = connect()
     try:
         conn.start()
@@ -13,6 +13,9 @@ def logout_site(off=1):
     finally:
         if conn:
             conn.end()
-	
+    
 if __name__ == "__main__":
-	logout_site()
+    logout_site()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()

@@ -47,7 +47,7 @@ def verify_first(function=None):
         new_function.__name__ = func.__name__
         new_function.__dict__ = func.__dict__
         new_function.__doc__ = func.__doc__
-         
+        
         return new_function
     
     return _dec(function) if function else _dec
@@ -70,9 +70,13 @@ def not_implemented(function=None):
 #utilities
 
 def pretty_print(page):
-    print 'Operation', ['failed', 'succeeded'][page['success']]
-    print 'Message:', page['message']
-    print 'Query:', page['query']['action']
+    ''' Prints HTTP response from secure_connection '''
+    if isinstance(page, dict):
+        print page['query']['action'], ['failed', 'succeeded'][page['success']]
+        print 'Message:', page['message']
+        print
+    else:
+        print page
 
 def set_password(new_pass):
     global password
@@ -83,6 +87,7 @@ def hashed_password():
     return SecTools.generate_hash(password,SecureWebConnection.usb_salt())
 
 def connect(input=False):
+    ''' Create a SecureWebConnection by inputting url and password '''
     url = url_input() if input else url_choose()
     if not url:
         raise Exception('No registered websites.')

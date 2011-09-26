@@ -7,21 +7,22 @@ from help import *
 
 @verify_first
 def gen_crypt_data(path=''):
+    ''' Generates PKA keys and hash '''
     print "Generating new Private and Public Keys (this may take a while)..."
     start_time = ConsoleTools.start_timer()
     priv_key, pub_key = PKA.generate_keys()
     total_time = ConsoleTools.end_timer(start_time)
     print "Private and Public Keys successfully generated in " + total_time + "."
-    print "Saving Private Key to " + path + "'box/private.key'..."
+    print "Saving Private Key to", quote(path + "box/private.key") + "..."
     ConsoleTools.file_write(path + 'box/private.key',priv_key)
-    print "Saving Public Key to " + path + "'box/public.key'..."
+    print "Saving Public Key to", quote(path + "box/public.key") + "..."
     ConsoleTools.file_write(path + 'box/public.key',pub_key)
     print "Private and Public Key successfully saved."
-    ConsoleTools.newline()
+    print
     print "Generating UUID and Salt..."
     uuid = SecTools.generate_uuid()
     salt = SecTools.generate_salt()
-    print "Saving UUID and Salt to " + path + "'box/config'"
+    print "Saving UUID and Salt to", (path + "box/config") + "..."
     text = uuid + "\n" + salt
     ConsoleTools.file_write(path + 'box/config',text)
     print "UUID and Salt successfully saved."
@@ -29,6 +30,8 @@ def gen_crypt_data(path=''):
 @with_help('gen')
 @verify_first
 def gen(off=1):
+    ''' Generates PKA keys and hash, with prompt '''
+    
     #introduction
     ConsoleTools.separator()
     print "Welcome to usb_api key and config generation program!"
@@ -70,7 +73,10 @@ def gen(off=1):
         print "Ending program."
         
     else:
-        print "No files created. Ending program..."
+        print "No files created."
 
 if __name__=="__main__":
     gen()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()

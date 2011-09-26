@@ -72,6 +72,7 @@ class ConsoleTools(object):
         #return None (or raise exception) otherwise
         
         
+        print 'Formatting usb...'
         #for testing purposes, comment this...
         '''if sys.platform == 'win32' or sys.platform == 'cygwin':
             drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
@@ -85,6 +86,7 @@ class ConsoleTools(object):
             
         path='../test_container.txt'
         ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.')
+        print 'Format successful. Container is', path
         return path
     
     @classmethod
@@ -98,17 +100,21 @@ class ConsoleTools(object):
         #return None (or raise exception) otherwise
         if path == None:
             return None
+        print 'Mounting usb...'
         dir='../test_folder/' # let's assume the truecrypt container is unmounted here
         if os.path.exists(dir):
             shutil.rmtree(dir)
         os.makedirs(dir)
+        print 'Mount successful. Mounted to', dir
         return dir
     
     @classmethod
     def close_usb(cls,path,diskpath,password):
+        ''' Unmounts the container of the encrypted files '''
         #TODO
         #Unmount the virtual disk
-        pass # let's assume data is written properly
+        print 'Unmounting usb...'
+        print 'Unmount successful.' # let's assume data is written properly
     
     @classmethod
     def file_write(cls,filename,text):

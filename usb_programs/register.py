@@ -37,3 +37,6 @@ def reg_site(off=1):
     
 if __name__ == "__main__":
     reg_site()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()

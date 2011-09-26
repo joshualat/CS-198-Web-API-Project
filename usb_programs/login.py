@@ -16,3 +16,6 @@ def login_site(off=1):
     
 if __name__ == "__main__":
     login_site()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()

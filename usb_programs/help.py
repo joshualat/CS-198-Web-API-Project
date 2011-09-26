@@ -6,30 +6,30 @@ help file/information.
 '''
 
 command_info = {
-    'create'    : [None, 
+    'create'  : [None, 
                     ('',          'create usb account.'),
                 ],
-    'info'      : [None, 
+    'info'    : [None, 
                     ('edit',      'edit user information.'),
                     ('upd[ate]',  'update user info to website/s.'),
                 ],
-    'reg'       : [None, 
+    'reg'     : [None, 
                     ('',          'register to website.'),
                 ],
-    'login'     : [None, 
+    'login'   : [None, 
                     ('',          'login to website.'),
                 ],
-    'logout'    : [None, 
+    'logout'  : [None, 
                     ('',          'logout from website.'),
                 ],
-    'newpass'   : [None, 
+    'newpass' : [None, 
                     ('',          'replace old password with new one.'),
                 ],
-    'help'      : [None, 
+    'help'    : [None, 
                     ('',          'display help text.'),
                     ('<command>', 'display help text for command <command>.'),
                 ],
-    'hello'     : [None, 
+    'hello'   : [None, 
                     ('',          'print hello world.'),
                 ],
     'gen'     : [None, 
@@ -38,6 +38,7 @@ command_info = {
 }
 
 def with_help(name):
+    ''' does not modify function, but sets the callable for 'name' to this function. '''
     def _dec(function):
         command_info[name][0] = function
         return function
@@ -50,9 +51,10 @@ def double_quote(c):
     return '"' + c + '"'
 
 def help_command(command):
+    ''' display help for command '''
     if command_info.has_key(command):
         print 'Help for command ' + quote(command) + ':'
-        ConsoleTools.newline()
+        print
         for args, info in command_info[command][1:]:
             quoted= quote(' '.join([command, args]).strip())
             print quoted, ':', info
@@ -72,8 +74,11 @@ def help(off=1):
     else:
         print 'Possible commands:'
         print command_info.keys()
-        ConsoleTools.newline()
+        print
         print 'See', quote('help <command>'), 'for more details.'
 
 if __name__ == "__main__":
     help()
+    ConsoleTools.newline(3)
+    print 'Program has ended.'
+    ConsoleTools.accept_input()
