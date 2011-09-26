@@ -7,15 +7,6 @@ from django.conf.urls.defaults import patterns, include, url
 urlpatterns = patterns('',
     url(r'^usb/', include('testsite.usb_api.urls')),
     url(r'^', include('testsite.core.urls')),
-    # Examples:
-    # url(r'^$', 'testsite.views.home', name='home'),
-    # url(r'^testsite/', include('testsite.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
 )
 
 # Serving of static media using Django is enabled only when

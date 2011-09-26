@@ -1,0 +1,96 @@
+Integrating API to website
+1) Copy usb_api folder and all of its contents to the project directory
+
+2) Run secure_start.py inside usb_api. 
+-> The secure_start.py program will create a box folder inside usb_api
+-> It will also create a config file, and public and private keys
+-> The directory tree should look like this:
+
+	project_dir/
+		app_1/			
+		app_2/
+		app_3/
+		...
+		app_n/
+		usb_api/
+			__init__.py
+			decorators.py
+			models.py
+			secure_start.py
+			urls.py
+			usb_api.py
+			views.py
+
+			box/
+				__init__.py
+				config
+				private.key
+				public.key
+
+			migrations/
+				<some migration files here>
+			lib/
+				__init__.py
+				ConnectTools.py
+				ConsoleTools.py
+				PKA.py
+				SecTools.py
+				SKA.py
+
+3) Add the following line inside the website's settings.py
+-> USB_LOGIN_REDIRECT_URL = "/"
+
+4) Update the INSTALLED_APPS tuple inside the website's settings.py to include "usb_api"
+-> 'usb_api'
+-> It should look something like this:
+
+	INSTALLED_APPS = (
+	    'django.contrib.auth',
+	    'django.contrib.contenttypes',
+	    'django.contrib.sessions',
+	    'django.contrib.sites',
+	    'django.contrib.messages',
+	    'django.contrib.staticfiles',
+	    'south',
+	    'core',
+	    'usb_api',
+	)
+
+5) Update urlpatterns inside the website's urls.py to include the usb_api urls
+-> url(r'^usb/', include('testsite.usb_api.urls')),
+-> It should look something like this:
+
+	urlpatterns = patterns('',
+	    url(r'^usb/', include('testsite.usb_api.urls')),
+	    url(r'^', include('testsite.core.urls')),
+	)
+
+6) Sync and Migrate your website's database
+-> python manage.py syncdb
+-> python manage.py migrate usb_api
+
+7) Update the website's views.py to require usb login
+-> from testsite.usb_api.decorators import usb_login_required
+-> @usb_login_required
+
+8) Update the website's views.py to obtain the user's information
+-> It should look something like this
+
+	from django.http import HttpResponse
+	from testsite.usb_api.decorators import usb_login_required
+	from testsite.usb_api.models import *
+
+	@usb_login_required
+	def index(request):
+	    usbuser_obj = USBUser.objects.get(usb_code=request.session['usb_code'])
+	    sample_output_dict = {
+		'username':usbuser_obj.username,
+		'first_name':usbuser_obj.first_name,
+		'last_name':usbuser_obj.last_name,
+		'email':usbuser_obj.email,
+		'sex':usbuser_obj.sex,
+	    }
+	    sample_output = ""
+	    for output in sample_output_dict:
+		sample_output += str(output) + ": " + str(sample_output_dict[output]) + "<br />"
+	    return HttpResponse(sample_output)
