@@ -14,8 +14,16 @@ class PKA(object):
     Public-Key Algorithm class
 
     Algorithms used:
-    RSA (encryption)
-    HMAC-SHA256 (signing)
+        RSA (encryption)
+        HMAC-SHA256 (signing)
+
+    Usable functions:
+        encrypt
+        decrypt
+        decrypt_or_none
+        sign
+        verify
+        generate_keys
 
     """
 
@@ -50,6 +58,7 @@ class PKA(object):
 
     @classmethod
     def decrypt_or_none(cls,private_key,message):
+        """returns decrypted message or none if decryption fails"""
         try:
             return cls.decrypt(private_key,message)
         except PKAError:
@@ -59,6 +68,7 @@ class PKA(object):
 
     @classmethod
     def sign(cls,private_key,message,pickler=pickle):
+        """signs a message using a private key"""
         message = cls.PICKLE_PAD + pickler.dumps(message)
         rsa = RSA.importKey(private_key)
         hashed_message = hashlib.sha256(message).digest()
@@ -67,6 +77,7 @@ class PKA(object):
 
     @classmethod
     def verify(cls,public_key,message,signature,pickler=pickle):
+        """verifies the message along with its signature using a public key"""
         message = cls.PICKLE_PAD + pickler.dumps(message)        
         hashed_message = hashlib.sha256(message).digest()
         rsa = RSA.importKey(public_key)

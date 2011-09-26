@@ -10,6 +10,16 @@ class ConsoleTools(object):
 
     Usable functions:
         accept_input
+        separator
+        newline
+        start_timer
+        end_timer
+        format_usb
+        read_usb
+        close_usb
+        plain_file_write
+        file_write
+        file_read
 
     """
 
