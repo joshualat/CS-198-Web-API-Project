@@ -1,5 +1,5 @@
 IMMEDIATE TODO:
-git ignore local_settings.py and dev.db
+	git ignore local_settings.py and dev.db
 
 box/
 	private.key
