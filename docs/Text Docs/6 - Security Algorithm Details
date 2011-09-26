@@ -1,0 +1,64 @@
+Security Algorithm Details
+
+1) Salt Generation
+-> Details:
+	Salt Length = 16
+-> Algorithm: 
+	random string from specified alphanumeric characters
+
+2) UUID Generation
+-> Algorithm:
+	uuid generated from host ID, sequence number and current time
+
+3) Hash Generation
+-> Algorithm:
+	message is serialized to string form
+	salt is concatenated to the message
+	message is hashed using SHA256
+
+4) Shared Key Algorithm (SKA)
+-> Details:
+	Encryption Algorithm: AES-CBC
+	Signing Algorithm: HMAC-SHA256
+	Key Size: 192
+	Signature Size: Digest size of SHA256
+	AES Block Size: 16
+-> Encryption Algorithm:
+	Message is serialized and padded to proper length
+	Message is encrypted using shared key
+	Message signature is generated using shared key and encrypted data
+	Message signature is concatenated to the encrypted message
+	Encrpted message with signature is returned
+-> Decryption Algorithm:
+	Signature and encrypted message are separated
+	Message signature is verified
+	Message is decrypted using the shared key
+	Message is deserialized
+	Deserialized message is returned
+
+5) Public Key Algorithm (PKA)
+-> Details:
+	Encryption Algorithm: RSA
+	Signing Algorithm: HMAC-SHA256
+	Key Size: 2048
+-> Encryption Algorithm
+	Message is serialized
+	Message is encrypted using public key
+	Message signature is generated using public key and encrypted data
+	Message signature is concatenated to the encrypted message
+	Encrpted message with signature is returned
+-> Decryption Algorithm
+	Signature and decrypted message are separated
+	Message signature is verified
+	Message is decrypted using the private key
+	Message is deserialized
+	Deserialized message is returned
+-> Signing Algorithm
+	Message is serialized to string
+	Message is hashed with SHA256
+	Hashed message is signed using private key
+	Signature is returned
+-> Verification Algorithm
+	Message is serialized to string
+	Message is hashed with SHA256
+	Signature is verified
