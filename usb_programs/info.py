@@ -57,17 +57,14 @@ def edit_info(path=''):
 @verify_first
 def update_info():
     '''updates user information stored to website '''
-    if not target_conn:
-        target_conn=connect()
-        target_conn.start()
-        
+    conn=connect()
+    conn.start()    
     try:
-        conn.start()
-        user_info = usb_data_for_site(target_conn.url)
-        page = target_conn.secure_message('edit_user_info', **user_info)
+        user_info = usb_data_for_site(conn.url)
+        page = conn.secure_message('edit_user_info', **user_info)
         pretty_print(page)
     finally:
-        target_conn.end()
+        conn.end()
     
 @with_help('info')
 def info(path='',off=1):

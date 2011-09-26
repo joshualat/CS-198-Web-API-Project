@@ -24,7 +24,14 @@ QUICK SETUP (for testsite):
 	easy_install --upgrade pycrypto
 	python secure_start.py (in testsite dir)
 
-NEW FILE, usb_programs/user_readme.txt, CREATED. CONTENTS:
+------------------------------------------------------------------------    
+
+NOTE:
+    We pretend that the container of our data is test_container.txt, 
+    and that it is unmounted on test_folder/.
+
+    
+usb_programs/user_readme.txt CONTENTS:
 
 WELCOME:
 

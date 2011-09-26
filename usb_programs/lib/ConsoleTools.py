@@ -85,7 +85,8 @@ class ConsoleTools(object):
             os.system('sudo mkfs.vfat %s' % (drive))'''
             
         path='../test_container.txt'
-        ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.')
+        ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.\n' +
+                'We also pretend that it is unmounted in test_folder/.\n')
         print 'Format successful. Container is', path
         return path
     
