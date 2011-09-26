@@ -14,8 +14,14 @@ class SKA(object):
     Symmetric Key Algorithm class 
 
     Algorithms used:
-    AES-CBC (encryption)
-    HMAC-SHA256 (signing)
+        AES-CBC (encryption)
+        HMAC-SHA256 (signing)
+
+    Usable functions:
+        generate_key
+        encrypt
+        decrypt
+        decrypt_or_none
 
     """
 
@@ -26,6 +32,7 @@ class SKA(object):
 
     @classmethod
     def generate_key(cls):
+        """generate shared key"""
         key = os.urandom(cls.KEY_SIZE / 8 + cls.SIG_SIZE)
         return key.encode("base64").replace("\n", "")
 
@@ -76,6 +83,7 @@ class SKA(object):
 
     @classmethod
     def decrypt_or_none(cls, shared_key, data):
+        """returns decrypted message or none if decryption fails"""
         try:
             return cls.decrypt(shared_key,data)
         except SKAError:

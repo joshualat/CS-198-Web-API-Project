@@ -1,5 +1,5 @@
 IMMEDIATE TODO:
-git ignore local_settings.py and dev.db
+	documentation
 
 box/
 	private.key
@@ -8,15 +8,18 @@ box/
 
 
 IMPORTANT LINKS:
-[link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
-[description] practical explanation and examples with pycrypto
+	[link] http://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
+	[description] practical explanation and examples with pycrypto
 
 GIT COMMANDS:
-git pull
-git push -u origin master
-git commit -m "Some message here" -a
+	git pull (pull)
+	git push -u origin master (push)
+	git commit -m "Some message here" -a (commit all changes)
+	git add . (add all changes)
+        git rm --cached filename (untrack files)
 
 QUICK SETUP (for testsite):
-easy_install pycrypto
-easy_install --upgrade pycrypto
-python secure_start.py
+	<install python django>
+	easy_install pycrypto
+	easy_install --upgrade pycrypto
+	python secure_start.py (in testsite dir)

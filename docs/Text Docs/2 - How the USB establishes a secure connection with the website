@@ -1,0 +1,92 @@
+How the USB establishes a secure connection with the website
+
+1) Initial Configurations
+	The Website has:
+		uuid - universally unique id
+		hashed uuid
+		private key
+		public key
+		url
+
+	The USB has
+		uuid - universally unique id
+		hashed uuid
+		password
+		salt
+		hashed password
+		private key
+		public key
+
+2) Public Keys are exchanged
+-> USB sends a post request to the website
+	Target URL: 
+		usb/exchange_keys
+	POST Parameters:
+		usb_public_key = USB's public key
+		usb_hashed_uuid = USB's hashed uuid
+-> Website accepts the usb's public key and hashed uuid
+-> If the user object with the USB's hashed uuid does not exist it is created
+-> The USB's public key is stored with the user object which can be searched using the USB's hashed uuid
+-> The website generates a dictionary output
+	output = {
+		'web_public_key':<website's public key>,
+		'web_hashed_uuid':<website's hashed uuid>,
+	}
+-> The dictionary output is serialized and returned back to the USB
+-> USB deserializes the return values and stores them in a file
+
+3) A shared key is generated in the USB
+
+4) The shared key is transferred from the USB to the website
+-> USB prepares post data in message blocks
+	message_1 = {
+		"usb_hashed_uuid":<usb's hashed uuid>,
+		"shared_key":<generated shared key>
+	}
+	message_2 = {
+		"usb_hashed_password":<usb's hashed password>
+		"usb_salt":<usb's salt>
+	}
+
+-> USB sends a post request to the website
+	Target URL:
+		usb/transfer_shared_key
+	POST Parameters:
+		usb_hashed_uuid = usb's hashed uuid
+		encrypted_message_1 = message_1 encrypted with website's public key
+		encrypted_message_2 = message_2 encrypted with website's public key
+		signature = signature of the first 3 POST parameters using USB's private key
+
+-> Website accepts the POST data
+-> Website decrypts the encrypted messages using its private key
+-> USB's public key is obtained using the USB's hashed uuid
+-> Signature is verified using USB's public key
+-> If the user already has a password, it is checked if the correct password has been sent
+-> The shared key, password, and salt are stored with the user object with the corresponding USB hash uuid
+-> The website returns an encrypted "OK" if the transfer is successful and valid. Otherwise, it returns "Invalid"
+
+5) USB sends a secure message to the website
+-> USB prepares post data in message data in a message group dictionary
+	message_group = {
+		"usb_hashed_uuid": <USB's hashed uuid>
+		"usb_hashed_password": <USB's hashed password>
+		"message": <Message to be sent>
+	}
+
+-> The message group dictionary is encrypted using the shared key
+-> USB sends a post request to the website
+	Target URL:
+		usb/secure_connection
+	POST Parameters:
+		usb_hashed_uuid = usb's hashed uuid
+		encrypted_message = encrypted message group dictionary
+
+-> Website accepts the POST data
+-> USB's shared key is obtained using the USB's hashed uuid
+-> The message group dictionary is decrypted using the shared key
+-> The unencrypted USB hashed uuid is compared with the decrypted USB hashed uuid
+-> The decrypted USB hashed password is compared with the stored hashed password
+-> The API processes the message if the hashed uuids and hashed passwords match
+-> The Website returns the the encrypted output to the USB
+-> The USB decrypts the encrypted output using the shared key
+-> The USB processes the decrypted output
