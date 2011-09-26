@@ -2,7 +2,11 @@ import sys
 from util import *
 from help import *
 
+
 fields = {
+
+    #field_name : (verbose_name, choices, is_required),
+    
     'first_name': ('first name', (), True),
     'last_name': ('last name', (), True),
     'email': ('e-mail address', (), True),
@@ -15,9 +19,7 @@ fields = {
     
 @verify_first
 def edit_info(path=''):
-    '''
-        edits user information stored on usb drive 
-    '''
+    ''' edits user information stored on usb drive  '''
     def input_name(name,choices):
         text = 'Input ' + name
         if not choices:
@@ -53,14 +55,19 @@ def edit_info(path=''):
 
 
 @verify_first
-def update_info(target_conn=None):
+def update_info():
     '''updates user information stored to website '''
     if not target_conn:
         target_conn=connect()
         target_conn.start()
-    user_info = usb_data_for_site(target_conn.url)
-    page = target_conn.secure_message('edit_user_info', **user_info)
-    pretty_print(page)
+        
+    try:
+        conn.start()
+        user_info = usb_data_for_site(target_conn.url)
+        page = target_conn.secure_message('edit_user_info', **user_info)
+        pretty_print(page)
+    finally:
+        target_conn.end()
     
 @with_help('info')
 def info(path='',off=1):
