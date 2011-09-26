@@ -4,9 +4,11 @@ from util import *
 def logout_site(off=1):
     ''' logins to website '''
     conn = connect()
-    conn.start()
-    page = conn.secure_message('logout')
-    conn.end()
+    try:
+        conn.start()
+        page = conn.secure_message('logout')
+    finally:
+        conn.end()
     print page
 	
 if __name__ == "__main__":
