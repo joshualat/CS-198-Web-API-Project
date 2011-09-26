@@ -71,6 +71,7 @@ def transfer_shared_key(request):
         usb_hashed_uuid = request.POST.get('usb_hashed_uuid',None)
         encrypted_message_1 = request.POST.get('encrypted_message_1',None)
         encrypted_message_2 = request.POST.get('encrypted_message_2',None)
+        signature = request.POST.get('signature',None)
 
         if usb_hashed_uuid != None and encrypted_message_1 != None and encrypted_message_2 != None:  
             # obtain private key of website
@@ -81,22 +82,35 @@ def transfer_shared_key(request):
             message_1 = PKA.decrypt(private_key,encrypted_message_1.decode("ascii"))
             message_2 = PKA.decrypt(private_key,encrypted_message_2.decode("ascii"))
 
-            if message_1['usb_hashed_uuid'] == usb_hashed_uuid:                
+            if message_1['usb_hashed_uuid'] == usb_hashed_uuid:
+               
                 # store data to appropriate usb user object
                 usbuser_obj = USBUser.objects.get(usb_code=usb_hashed_uuid)
-                usbuser_obj.shared_key = message_1['shared_key']
                 usbuser_obj_public_key = usbuser_obj.public_key
-                if usbuser_obj.password_code == "" or usbuser_obj.password_code == None:
-                    usbuser_obj.password_code = message_2['usb_hashed_password']
-                elif usbuser_obj.password_code != message_2['usb_hashed_password']:
-                    output = "Invalid Password"
+
+                params = {
+                    "usb_hashed_uuid":str(usb_hashed_uuid),
+                    "encrypted_message_1":str(encrypted_message_1),
+                    "encrypted_message_2":str(encrypted_message_2),
+                }
+
+                # verify signature
+                verification = PKA.verify(usbuser_obj_public_key,params,signature)
+
+                if verification == True:
+                    usbuser_obj.shared_key = message_1['shared_key']
+                
+                    if usbuser_obj.password_code == "" or usbuser_obj.password_code == None:
+                        usbuser_obj.password_code = message_2['usb_hashed_password']
+                    elif usbuser_obj.password_code != message_2['usb_hashed_password']:
+                        output = "Invalid Password"
+                        encrypted_output = PKA.encrypt(usbuser_obj_public_key,output)
+                        return HttpResponse(encrypted_output)                    
+                    usbuser_obj.salt = message_2['usb_salt']
+                    usbuser_obj.save()
+                    output = "OK"
                     encrypted_output = PKA.encrypt(usbuser_obj_public_key,output)
-                    return HttpResponse(encrypted_output)                    
-                usbuser_obj.salt = message_2['usb_salt']
-                usbuser_obj.save()
-                output = "OK"
-                encrypted_output = PKA.encrypt(usbuser_obj_public_key,output)
-                return HttpResponse(encrypted_output)
+                    return HttpResponse(encrypted_output)
     return HttpResponse("Invalid")
 
 @csrf_exempt

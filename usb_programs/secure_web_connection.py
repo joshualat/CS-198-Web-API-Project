@@ -98,10 +98,13 @@ class SecureWebConnection(object):
 
         target_url = self.url + "usb/transfer_shared_key"
         params = {
-            "usb_hashed_uuid":self.usb_hashed_uuid(),
-            "encrypted_message_1":encrypted_message_1,
-            "encrypted_message_2":encrypted_message_2,
+            "usb_hashed_uuid":str(self.usb_hashed_uuid()),
+            "encrypted_message_1":str(encrypted_message_1),
+            "encrypted_message_2":str(encrypted_message_2),
         }
+
+        signature = PKA.sign(self.usb_private_key(),params)
+        params['signature'] = signature
 
         page = ConnectTools.request_post(target_url,params)
         return page
@@ -137,12 +140,12 @@ class SecureWebConnection(object):
         page = ConnectTools.request_post(target_url,params)
         if page == 'Invalid':
             return page
-        print page
+        #print page
         page = SKA.decrypt(shared_key,page.decode("base64"))
         page = SecTools.deserialize(page)
         if message!=None and message.get('action',None) == 'login':
             login_url = ConnectTools.browser_open(self.url + "usb/login",page['message'])
-            print "Login URL: " + login_url
+            #print "Login URL: " + login_url
             self.delete_shared_key()
         if message!=None and message.get('action',None) == 'logout':
             ConnectTools.browser_open(self.url + "usb/logout")

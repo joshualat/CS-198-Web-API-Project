@@ -2,7 +2,8 @@ from secure_web_connection import *
 import datetime
 
 swc = SecureWebConnection("http://localhost:8000/","\x90\xe6\x8b\x80b\xf2\xbecq\x88\xdd\xc2j\xde1\xb0\x19B\x01v\xa7glY\x96\xf6\x10\xa1&Ir\xf8")
-print swc.start()
+#print swc.start()
+swc.start()
 
 m1 = {
     'action':'username_exists',

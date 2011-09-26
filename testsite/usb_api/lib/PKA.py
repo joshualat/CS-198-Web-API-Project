@@ -58,6 +58,21 @@ class PKA(object):
             return None
 
     @classmethod
+    def sign(cls,private_key,message,pickler=pickle):
+        message = cls.PICKLE_PAD + pickler.dumps(message)
+        rsa = RSA.importKey(private_key)
+        hashed_message = hashlib.sha256(message).digest()
+        signature = rsa.sign(hashed_message,'')
+        return str(signature[0])
+
+    @classmethod
+    def verify(cls,public_key,message,signature,pickler=pickle):
+        message = cls.PICKLE_PAD + pickler.dumps(message)        
+        hashed_message = hashlib.sha256(message).digest()
+        rsa = RSA.importKey(public_key)
+        return rsa.verify(hashed_message,(long(signature),))
+
+    @classmethod
     def generate_keys(cls,key_size=2048):
         """generate private and public keys"""
         random_generator = Random.new().read
@@ -70,6 +85,8 @@ if __name__ == "__main__":
     data = {"key1":"value1","key2":[1,2,3]}
     encrypted_message = PKA.encrypt(pub_key,data)
     decrypted_message = PKA.decrypt(priv_key,encrypted_message)
+    signature = PKA.sign(priv_key,encrypted_message)
+    verified = PKA.verify(pub_key,encrypted_message,signature)
     print "\n"+"-"*50+"\n"
 
     print "Private Key:"
@@ -91,3 +108,9 @@ if __name__ == "__main__":
     print decrypted_message
 
     print "\n"+"-"*50+"\n"
+
+    print "Signature:"
+    print signature
+
+    print "Verified:"
+    print verified
