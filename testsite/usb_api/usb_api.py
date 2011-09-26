@@ -130,4 +130,8 @@ class USB_API(object):
 
     @classmethod
     def logout(cls,data,usb_hashed_uuid,session,message):
-        pass
+        return {
+            'success':True,
+            'message':{},
+            'query':message
+        }

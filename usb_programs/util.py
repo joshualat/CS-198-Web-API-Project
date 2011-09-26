@@ -1,6 +1,7 @@
 from lib.ConsoleTools import *
 from lib.SecTools import *
 from secure_file_io import *
+from secure_web_connection import *
 from getpass import getpass
 
 GENDER_CHOICES = (
@@ -12,11 +13,6 @@ password = None
 MAIN_SITE = 'http://localhost:8000/'
 path = ''#replace with path to drive (end it with /)
 LOGIN_ATTEMPTS = 3
-
-def hashed_password():
-    if not password:
-        return None
-    return generate_hash(password,SecureWebConnection.usb_salt())
 
 #decorators
 def login_first(function=None):
@@ -50,6 +46,17 @@ def not_implemented(function=None):
     
     
 #utilities
+
+@login_first
+def hashed_password():
+    #return SecTools.generate_hash(password,SecureWebConnection.usb_salt())
+    hsh = SecTools.generate_hash(password,SecureWebConnection.usb_salt())
+    print hsh
+    return hsh
+
+def connect():
+    return SecureWebConnection(url_choose(), hashed_password())
+    
 def login():
     '''gathers password for reading of usb data'''
     global password
