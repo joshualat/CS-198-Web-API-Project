@@ -71,23 +71,20 @@ class ConsoleTools(object):
         #(end path with '/')
         #return None (or raise exception) otherwise
         
-        
-        print 'Formatting usb...'
-        #for testing purposes, comment this...
-        '''if sys.platform == 'win32' or sys.platform == 'cygwin':
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
             drive = ConsoleTools.accept_input('Enter the drive letter where USB flash drive is mounted: ')
             os.system('format %s:  /FS:FAT32' % (drive))
         else:
-            print 'Please identify the USB flash drive\'s partition name.'
             os.system('sudo fdisk -l')
             drive = ConsoleTools.accept_input('Enter the USB flash drive\'s partition name: ')
             os.system('sudo umount %s' % (drive))
-            os.system('sudo mkfs.vfat %s' % (drive))'''
-            
-        path='../test_container.txt'
-        ConsoleTools.file_write(path,'We pretend this file contains the truecrypt data.\n' +
-                'We also pretend that it is unmounted in test_folder/.\n')
-        print 'Format successful. Container is', path
+            os.system('sudo mkfs.vfat %s' % (drive))
+            os.system('sudo mkdir /media/external')
+            os.system('sudo mount -t vfat %s /media/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137' % drive)
+            os.system('sudo cp Sample.mp4 /media/external')
+            os.system('truecrypt -t -c /media/external/Sample.mp4 -p %s -k "" --encryption=AES --hash=SHA-512\
+                     --volume-type=hidden --size=14000000 --filesystem=FAT' % (password))
+            os.system('python tcsteg.py Sample.mp4 /media/external/Sample.mp4')
         return path
     
     @classmethod
