@@ -68,7 +68,6 @@ class ConsoleTools(object):
         #Format USB to FAT32 format
         #create truecrypt container in the target drive
         #return the path to the truecrypt container (e.g. 'D:/data/sample.mp4') if successful
-        #(end path with '/')
         #return None (or raise exception) otherwise
         
         if sys.platform == 'win32' or sys.platform == 'cygwin':
@@ -85,7 +84,7 @@ class ConsoleTools(object):
             os.system('truecrypt -t -c /media/external/Sample.mp4 -p %s -k "" --encryption=AES --hash=SHA-512\
                      --volume-type=hidden --size=14000000 --filesystem=FAT' % (password))
             os.system('python tcsteg.py Sample.mp4 /media/external/Sample.mp4')
-        return path
+        return '/media/external/Sample.mp4'
     
     @classmethod
     def read_usb(cls,path,password):
