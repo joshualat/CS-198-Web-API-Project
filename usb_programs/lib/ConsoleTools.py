@@ -84,7 +84,8 @@ class ConsoleTools(object):
             os.system('truecrypt -t -c /media/external/Sample.mp4 -p %s -k "" --encryption=AES --hash=SHA-512\
                      --volume-type=hidden --size=14000000 --filesystem=FAT' % (password))
             os.system('python tcsteg.py Sample.mp4 /media/external/Sample.mp4')
-        return '/media/external/Sample.mp4'
+            path = 'media/external/Sample.mp4'
+        return path
     
     @classmethod
     def read_usb(cls,path,password):
@@ -95,14 +96,19 @@ class ConsoleTools(object):
         #return the path to the virtual disk (e.g. 'M:/') if successful
         #(end path with '/')
         #return None (or raise exception) otherwise
+        
         if path == None:
             return None
         print 'Mounting usb...'
-        dir='../test_folder/' # let's assume the truecrypt container is unmounted here
-        if os.path.exists(dir):
-            shutil.rmtree(dir)
-        os.makedirs(dir)
-        print 'Mount successful. Mounted to', dir
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            pass
+        else:
+            try:
+                os.system('truecrypt -m nokernelcrypto %s /media/truecrypt' % (path))
+            except:
+                return None
+            dir = '/media/truecrypt'
+        print 'Mount successful. Mounted to %s' % (dir)
         return dir
     
     @classmethod
