@@ -80,11 +80,12 @@ class ConsoleTools(object):
             os.system('sudo mkfs.vfat %s' % (drive))
             os.system('sudo mkdir /media/external')
             os.system('sudo mount -t vfat %s /media/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137' % drive)
-            os.system('sudo cp Sample.mp4 /media/external')
+            sample_path = 'lib/Sample.mp4'
+            os.system('sudo cp %s /media/external' % (sample_path))
             os.system('truecrypt -t -c /media/external/Sample.mp4 -p %s -k "" --encryption=AES --hash=SHA-512\
                      --volume-type=hidden --size=14000000 --filesystem=FAT' % (password))
             os.system('python tcsteg.py Sample.mp4 /media/external/Sample.mp4')
-            path = 'media/external/Sample.mp4'
+            path = '/media/external/Sample.mp4'
         return path
     
     @classmethod
@@ -104,10 +105,10 @@ class ConsoleTools(object):
             pass
         else:
             try:
-                os.system('truecrypt -m nokernelcrypto %s /media/truecrypt' % (path))
+                os.system('truecrypt -m nokernelcrypto %s /media/truecrypt/' % (path))
             except:
                 return None
-            dir = '/media/truecrypt'
+            dir = '/media/truecrypt/'
         print 'Mount successful. Mounted to %s' % (dir)
         return dir
     
