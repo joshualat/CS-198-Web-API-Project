@@ -116,7 +116,13 @@ class ConsoleTools(object):
         ''' Unmounts the container of the encrypted files '''
         #TODO
         #Unmount the virtual disk
+        if path == None:
+            return None
         print 'Unmounting usb...'
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            pass
+        else:
+            os.system('truecrypt -d %s' % (diskpath))
         print 'Unmount successful.' # let's assume data is written properly
     
     @classmethod
