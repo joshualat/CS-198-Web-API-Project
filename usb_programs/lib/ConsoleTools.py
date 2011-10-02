@@ -79,13 +79,20 @@ class ConsoleTools(object):
             os.system('sudo umount %s' % (drive))
             os.system('sudo mkfs.vfat %s' % (drive))
             os.system('sudo mkdir /media/external')
+            os.system('sudo mkdir /media/outer')
             os.system('sudo mount -t vfat %s /media/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137' % drive)
+            os.system('truecrypt -t --filesystem=none -k "" -p %s --volume-type=normal\
+                     --size=50000000 --encryption=AES --hash=SHA-512 -c /media/external/Project.mp4' % (password))
+            os.system('truecrypt -t -m nokernelcrypto -k "" --protect-hidden=no --filesystem=none /media/external/Project.mp4 /media/outer -p %s' % (password))
+            os.system('truecrypt -t --filesystem=FAT -k "" -p %s --volume-type=hidden\
+                     --size=45000000 --encryption=AES --hash=SHA-512 -c /media/external/Project.mp4' % (password))
+            #os.system('truecrypt -t /media/external/Project.mp4 --protection-password=%s' % (password))
+            #os.system('sudo mkfs.vfat /media/external/Project.mp4')
+            #os.system('truecrypt -t -m nokernelcrypto /media/external/Project.mp4 /media/truecrypt/ --protection-password=%s' % (password))
             sample_path = 'lib/Sample.mp4'
-            os.system('sudo cp %s /media/external' % (sample_path))
-            os.system('truecrypt -t -c /media/external/Sample.mp4 -p %s -k "" --encryption=AES --hash=SHA-512\
-                     --volume-type=hidden --size=14000000 --filesystem=FAT' % (password))
-            os.system('python tcsteg.py Sample.mp4 /media/external/Sample.mp4')
-            path = '/media/external/Sample.mp4'
+            os.system('python tcsteg.py %s /media/external/Project.mp4' % (sample_path))
+            os.system('truecrypt -t -d')
+            path = '/media/external/Project.mp4'
         return path
     
     @classmethod
@@ -105,7 +112,7 @@ class ConsoleTools(object):
             pass
         else:
             try:
-                os.system('truecrypt -m nokernelcrypto %s /media/truecrypt/' % (path))
+                os.system('truecrypt -t -k "" --protect-hidden=no -p %s %s /media/truecrypt' % (password, path))
             except:
                 return None
             dir = '/media/truecrypt/'
@@ -123,7 +130,7 @@ class ConsoleTools(object):
         if sys.platform == 'win32' or sys.platform == 'cygwin':
             pass
         else:
-            os.system('truecrypt -d %s' % (diskpath))
+            os.system('truecrypt -t -d')
         print 'Unmount successful.' # let's assume data is written properly
     
     @classmethod
