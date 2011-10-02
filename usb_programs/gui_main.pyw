@@ -11,21 +11,23 @@ from info import *
 SPACING = 3
 GROUP_SPACING = 15
 BAR_SIZE = 21
-MAIN_YOFF = 45
+MAIN_YOFF_INP = 110
 CROSS_DX = 0
 CROSS_DY = 0
-BUTTON_DX = 8
-BUTTON_DY = 8
+BUTTON_DX = 20
+BUTTON_DY = 20
 BUTTON_SPACING_X = 3
 BUTTON_SPACING_Y = 3
 PANEL_XOFF = 20
 PANEL_YOFF = 40
+PANEL_INPUT_DX = 0
+PANEL_INPUT_DY = 20
 INPUT_DX = 2
 INPUT_DY = 2
 MSG_OX = 36
 MSG_OY = 55
-ICON_DX = 24
-ICON_DY = 37
+ICON_DX = 40
+ICON_DY = 70
 TEXT_LEN = 400
 TEXT_SIZE = 11
 STAT_SPACING = 10
@@ -94,7 +96,7 @@ class Gui(wx.Frame):
                 ('help', 'help', 'help'),
             ],
         ]
-        y = MAIN_YOFF
+        y = MAIN_YOFF_INP
         for group in groups:
             for path, state, icon in group:
                 icon = wx.Bitmap('icon/' + icon + '.png', wx.BITMAP_TYPE_PNG)
@@ -382,7 +384,7 @@ class Gui(wx.Frame):
     
     def success_handle(self):
         label = self.succ if self.successful else self.fail 
-        label.set_pos(self.text_x, self.text_y 
+        label.set_pos(MSG_OX, self.text_y 
                     - STAT_SPACING - self.fail.GetHeight())
         self.wait.hide()
         self.warning.hide()
@@ -394,8 +396,8 @@ class Gui(wx.Frame):
         return get_sites()
     
     def widgets(self, *args):
-        x = PANEL_XOFF
-        y = PANEL_YOFF
+        x = PANEL_XOFF + PANEL_INPUT_DX
+        y = PANEL_YOFF + PANEL_INPUT_DY
         widgets = []
         containers = []
         widget_map = {}
@@ -533,7 +535,7 @@ class Gui(wx.Frame):
         dc.DrawBitmap(self.containers[0], 0, 0, True)
         
         if self.c_message:
-            x = self.text_x
+            x = MSG_OX
             y = self.text_y
             for msg in self.c_message:
                 dc.DrawText(msg, x, y - TEXT_SIZE)
