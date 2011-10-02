@@ -115,9 +115,13 @@ def url_input():
     ''' asks a valid url from the user '''
     return ConsoleTools.accept_input("Please enter url: ")#just a normal input for now
 
+def get_sites():
+    web_data = SecureFileIO.load_usb_data()
+    return web_data['usernames'].keys() if web_data.has_key('usernames') else []
+    
 def url_choose():
     '''choose from websites written in drive'''
-    web_data = SecureFileIO.load_web_data()
+    web_data = get_sites()
     
     if not web_data:
         print 'No registered sites'

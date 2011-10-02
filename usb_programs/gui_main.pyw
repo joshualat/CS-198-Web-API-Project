@@ -391,7 +391,7 @@ class Gui(wx.Frame):
         self.Refresh()
         
     def get_websites(self):
-        return SecureFileIO.load_web_data().keys()
+        return get_sites()
     
     def widgets(self, *args):
         x = PANEL_XOFF
@@ -553,6 +553,6 @@ if __name__ == "__main__":
     except Exception, e:
         import traceback
         print e
-        print e
+        #print traceback.print_exc(e)
         raw_input()
         

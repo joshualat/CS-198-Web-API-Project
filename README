@@ -1,3 +1,13 @@
+GUI SETUP:
+	install wxPython
+	done.
+
+RUN GUI:
+	Run gui_main.pyw.
+	It works just like usb_main.py, with the 'create' command removed.
+	No GUI for 'create' yet.
+
+
 IMMEDIATE TODO:
 	documentation
 

@@ -4,6 +4,7 @@ from util import *
 from gen_crypt_data import *
 import shutil
 from info import *
+import traceback
 
 @with_help('create')
 def create_usb(off=1):
@@ -34,8 +35,9 @@ def create_usb(off=1):
             ConsoleTools.file_write(cryptpath + 'box/hashedpass',hashed)
             try:
                 print
-                print 'Editing information...'
-                edit_info(path=cryptpath)
+                if ConsoleTools.accept_input('Edit account information now?', ['y', 'n']) == 'y':
+                    print 'Editing information...'
+                    edit_info(path=cryptpath)
             except:
                 traceback.print_exc()
             print
