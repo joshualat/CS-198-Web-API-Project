@@ -130,7 +130,7 @@ def url_choose():
     choices = {}
     size = 0
     
-    for website in web_data.keys():
+    for website in web_data:
         size = size + 1
         choices[str(size)] = website
     
